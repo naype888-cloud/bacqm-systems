@@ -37,10 +37,14 @@ con el scheduler activo. Las medianas semanales están en
 | 15 ago – 26 sep | 1,791 | 83.3 µs | 119.8 µs | 317.0 µs | 513.9 µs | 0.080 % |
 | 27 sep – 14 oct | 791 | 87.3 µs | 259.9 µs | 415.0 µs | 559.6 µs | 0.013 % |
 
-El cambio entre los dos periodos coincide con la actualización de los módulos
-instalada el 26 de septiembre: el p99 pasivo subió de 120 a 260 µs y los ciclos
-perdidos bajaron de 0.080 % a 0.013 %. La telemetría pasiva no tiene grupo de
-control; la comparación contra CONTROL se repetirá con los módulos actuales.
+El cambio entre los dos periodos no es una regresión del scheduler. Hasta el
+26 de septiembre, un hilo del sistema despertaba cada 1 ms, el mismo periodo que
+la sonda, y eso favorecía a la sonda. Desde entonces ese hilo duerme cuando no
+hay trabajo y deja de perturbar al sistema. Una A/B del 15 de octubre, con el
+mismo módulo, lo confirma: con el pulso de 1 ms la sonda marca p99 de 159 µs, y
+sin él, 280 µs. Preferimos no perturbar el sistema para mejorar la medición, así
+que vale el segundo periodo. Las cifras de esta tabla describen a la sonda, no a
+una carga real.
 
 ## Plataformas
 
