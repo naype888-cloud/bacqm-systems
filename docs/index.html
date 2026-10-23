@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>BACQM Systems</title>
+<meta name="description" content="Scale-invariant memory dynamics: an elastic domain split into equal-precedence collectors, a kernel control law with no fixed constants, and tail latency bounded by measurement.">
+<meta name="theme-color" content="#06080b">
+<link rel="icon" href="media/favicon.svg" type="image/svg+xml">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="BACQM Systems">
+<meta property="og:title" content="BACQM Systems — scale-invariant memory dynamics">
+<meta property="og:description" content="Equal-precedence collectors, a control law with no fixed constants, tail latency bounded by measurement.">
+<meta property="og:url" content="https://naype888-cloud.github.io/bacqm-systems/">
+<meta property="og:image" content="https://naype888-cloud.github.io/bacqm-systems/media/og.png">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="preload" href="media/fonts/instrument-serif-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="shared/css/tokens.css">
+<link rel="stylesheet" href="shared/css/landing.css?v=20261023">
+<script>document.documentElement.classList.add("js")</script>
+</head>
+<body class="landing">
+<main class="stage">
+  <section class="hero" aria-labelledby="title">
+    <figure class="scene">
+      <canvas id="manifold" role="img" aria-label="The fast domain V at the centre; k collectors at equal angles around it; pages leave V in turn, one collector after the next, and drain into the outer dissipative ring."></canvas>
+      <p class="readout" id="readout" aria-live="polite"></p>
+      <noscript><img class="fallback" src="media/banner.svg" alt=""></noscript>
+      <figcaption>ℛ = ⊕ ℛ<sub>i</sub> · equal precedence<span class="hint"> · click to open a lane · drag to turn</span></figcaption>
+    </figure>
+
+    <div class="copy">
+      <p class="kicker">Systems algebra · measured</p>
+      <h1 id="title">BACQM<br>Systems</h1>
+      <p class="sub">Memory as a flow, not a volume</p>
+      <div class="rule" aria-hidden="true"><span></span></div>
+
+      <ol class="ticker" aria-label="The results">
+        <li><a href="formal/#s2"><span class="n">01 / 08</span><span class="name">Equal-precedence direct sum</span><code>ℛ = ⊕ ℛᵢ,  π(ℛᵢ) = π(ℛⱼ)</code></a></li>
+        <li><a href="formal/#s2"><span class="n">02 / 08</span><span class="name">Scale invariance</span><code>p99 · μ = ln 100 / (1 − ρ/k)</code></a></li>
+        <li><a href="evidence/#ab"><span class="n">03 / 08</span><span class="name">Tail bound</span><code>p99 · p999 · max: −90 % … −99 %</code></a></li>
+        <li><a href="evidence/#ab"><span class="n">04 / 08</span><span class="name">Declared trade-off</span><code>p50: +10.5 % … +13.8 %</code></a></li>
+        <li><a href="formal/#s1"><span class="n">05 / 08</span><span class="name">Boundary of the fast domain</span><code>‖σ(t)‖ / C_V ≥ 0.9975</code></a></li>
+        <li><a href="formal/#s3"><span class="n">06 / 08</span><span class="name">Asymmetric decoupling</span><code>𝔼[load_host] ≈ 0.19 … 0.21</code></a></li>
+        <li><a href="formal/#s3"><span class="n">07 / 08</span><span class="name">Closed-loop dissipation</span><code>∂ₜE = P_in − ∇·J_S</code></a></li>
+        <li><a href="evidence/#passive"><span class="n">08 / 08</span><span class="name">Non-invasive observation</span><code>2,582 passive samples</code></a></li>
+      </ol>
+      <div class="progress" aria-hidden="true"><span></span></div>
+
+      <p class="spaces">𝒱 · ℛ<sub>1</sub> ⊕ … ⊕ ℛ<sub><span class="v">k</span></sub> · Ω · ∇S</p>
+    </div>
+  </section>
+
+  <nav class="doors" aria-label="Choose a version">
+    <a class="door" href="formal/">
+      <span class="k">Formal</span>
+      <span class="t">The model, in four sections</span>
+      <span class="d">State space, the multi-way topology, the master equations of the kernel and what follows from them.</span>
+      <span class="go" aria-hidden="true"></span>
+    </a>
+    <a class="door" href="evidence/">
+      <span class="k">Evidence</span>
+      <span class="t">Measured, not assumed</span>
+      <span class="d">A/B campaigns against an unmodified baseline and weekly passive telemetry, with the method.</span>
+      <span class="go" aria-hidden="true"></span>
+    </a>
+  </nav>
+</main>
+<script src="shared/js/manifold.js?v=20261023" defer></script>
+</body>
+</html>

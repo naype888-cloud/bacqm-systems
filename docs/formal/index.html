@@ -1,0 +1,242 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Formal note — BACQM Systems</title>
+<meta name="description" content="Scale-invariant memory dynamics under asymptotic saturation: state space, the equal-precedence multi-way topology, the master equations of the kernel.">
+<link rel="icon" href="../media/favicon.svg" type="image/svg+xml">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="BACQM Systems">
+<meta property="og:title" content="Scale-invariant memory dynamics under asymptotic saturation">
+<meta property="og:description" content="State space, the equal-precedence multi-way topology, the master equations of the kernel.">
+<meta property="og:url" content="https://naype888-cloud.github.io/bacqm-systems/formal/">
+<meta property="og:image" content="https://naype888-cloud.github.io/bacqm-systems/media/og.png">
+<script src="../shared/js/theme.js?v=20261023" data-toggle></script>
+<link rel="stylesheet" href="../shared/css/page.css?v=20261023">
+</head>
+<body>
+<main>
+  <nav class="navbar" aria-label="Site">
+    <a class="brand" href="../">BACQM Systems<span class="sect"> · Formal note</span></a>
+    <a class="pill" href="./" aria-current="page">Formal</a>
+    <a class="pill" href="../evidence/">Evidence</a>
+    <button class="pill" id="theme" type="button">☀ Light</button>
+  </nav>
+
+  <p class="series">BACQM Systems Research Group · Technical note · Systems algebra</p>
+  <h1>Scale-invariant memory dynamics under asymptotic saturation</h1>
+  <div class="rule" aria-hidden="true"></div>
+
+  <section class="abstract" aria-label="Abstract">
+    <span class="k">Abstract</span>
+    <p>We give an algebraic and operational formulation of hierarchical memory under asymptotic saturation.
+    Deterministic allocation policies treat memory as a static volume; as demand approaches the physical
+    boundary their latency diverges. Here memory is a flow. The elastic domain is split into <i>k</i>
+    collectors of equal precedence, served in turn, and a kernel control law with no fixed constants
+    follows the pressure gradient. The tail bound that results depends only on dimensionless ratios, so the
+    same law holds at every scale of the address space. Measured on the reference node: tail latency
+    −90 % to −99 % against an unmodified baseline, the fast domain held at ≥ 99.75 % occupancy with no
+    null-state transition, and the host processor at 0.19–0.21 mean load while the coprocessor runs saturated.</p>
+  </section>
+
+  <!-- ===================================================================== -->
+  <h2 id="s1"><span class="no">§1</span>Algebraic frame</h2>
+  <p>The system is a hierarchical state space with two volatile domains:</p>
+  <ol>
+    <li>a fast transit domain <math><mi>𝒱</mi></math> bounded by <math><msub><mi>C</mi><mi>𝒱</mi></msub></math>;</li>
+    <li>an elastic, compressed domain <math><mi>ℛ</mi></math> of bound
+      <math><msub><mi>C</mi><mi>ℛ</mi></msub><mo>≫</mo><msub><mi>C</mi><mi>𝒱</mi></msub></math>.</li>
+  </ol>
+  <p>A conventional kernel projects the working set <math><mi>𝒮</mi></math> stationarily,
+    <math><mi>Φ</mi><mo>:</mo><mi>𝒮</mi><mo>→</mo><mi>𝒱</mi></math>.
+  When the instantaneous demand <math><mi>σ</mi><mo>(</mo><mi>t</mi><mo>)</mo></math> approaches the bound,</p>
+  <div class="eq">
+    <math display="block"><munder><mo movablelimits="false">lim</mo><mrow><mi>t</mi><mo>→</mo><msub><mi>t</mi><mi>c</mi></msub></mrow></munder>
+      <msub><mrow><mo>‖</mo><mi>σ</mi><mo>(</mo><mi>t</mi><mo>)</mo><mo>‖</mo></mrow><mi>𝒱</mi></msub>
+      <mo>=</mo><msub><mi>C</mi><mi>𝒱</mi></msub><mo>−</mo><mi>ε</mi><mo>,</mo><mspace width="1em"/><mi>ε</mi><mo>→</mo><mn>0</mn><mo>,</mo></math>
+    <span class="tag">(1.1)</span>
+  </div>
+  <p>a deterministic allocator meets a latency discontinuity: page contention stalls, or the process space
+  is terminated. We restate the problem as conservation of flow. Write <math><mi>a</mi><mo>(</mo><mi>t</mi><mo>)</mo></math> for pages admitted to
+  <math><mi>𝒱</mi></math>, <math><msub><mi>e</mi><mi>i</mi></msub><mo>(</mo><mi>t</mi><mo>)</mo></math> for pages evacuated to collector
+  <math><msub><mi>ℛ</mi><mi>i</mi></msub></math> and <math><msub><mi>r</mi><mi>i</mi></msub><mo>(</mo><mi>t</mi><mo>)</mo></math> for pages returned from it:</p>
+  <div class="eq">
+    <math display="block"><mi>σ</mi><mo>(</mo><mi>t</mi><mo>+</mo><mn>1</mn><mo>)</mo><mo>=</mo><mi>σ</mi><mo>(</mo><mi>t</mi><mo>)</mo><mo>+</mo><mi>a</mi><mo>(</mo><mi>t</mi><mo>)</mo>
+      <mo>−</mo><munderover><mo>∑</mo><mrow><mi>i</mi><mo>=</mo><mn>1</mn></mrow><mi>k</mi></munderover><msub><mi>e</mi><mi>i</mi></msub><mo>(</mo><mi>t</mi><mo>)</mo>
+      <mo>+</mo><munderover><mo>∑</mo><mrow><mi>i</mi><mo>=</mo><mn>1</mn></mrow><mi>k</mi></munderover><msub><mi>r</mi><mi>i</mi></msub><mo>(</mo><mi>t</mi><mo>)</mo><mo>.</mo></math>
+    <span class="tag">(1.2)</span>
+  </div>
+  <p>Memory is then an operator of phase density, not a container. Nothing in (1.2) names a size:
+  the algebra is the same for an elementary address space and for a fleet.</p>
+  <div class="prop">
+    <div class="h">Observation 1 <span>· fast-domain boundary · <span class="chip measured">measured</span></span></div>
+    <p>Sustained occupancy <math><msub><mrow><mo>‖</mo><mi>σ</mi><mo>‖</mo></mrow><mi>𝒱</mi></msub><mo>/</mo><msub><mi>C</mi><mi>𝒱</mi></msub><mo>≥</mo><mn>0.9975</mn></math>
+    without a null-state transition: no panic, no controller reset.</p>
+  </div>
+
+  <!-- ===================================================================== -->
+  <h2 id="s2"><span class="no">§2</span>Multi-way topology of entropic absorption</h2>
+  <p>A single compression queue is a one-dimensional bottleneck. The elastic domain is split into a bundle of
+  concurrent collectors,</p>
+  <div class="eq">
+    <math display="block"><mi>ℛ</mi><mo>=</mo><munderover><mo>⨁</mo><mrow><mi>i</mi><mo>=</mo><mn>1</mn></mrow><mi>k</mi></munderover><msub><mi>ℛ</mi><mi>i</mi></msub><mo>,</mo>
+      <mspace width="1.5em"/><mi>π</mi><mo>(</mo><msub><mi>ℛ</mi><mi>i</mi></msub><mo>)</mo><mo>=</mo><mi>π</mi><mo>(</mo><msub><mi>ℛ</mi><mi>j</mi></msub><mo>)</mo>
+      <mspace width="0.6em"/><mo>∀</mo><mi>i</mi><mo>,</mo><mi>j</mi><mo>∈</mo><mo>{</mo><mn>1</mn><mo>,</mo><mo>…</mo><mo>,</mo><mi>k</mi><mo>}</mo><mo>,</mo></math>
+    <span class="tag">(2.1)</span>
+  </div>
+  <p>where <math><mi>π</mi></math> is the precedence in the routing graph. Equal precedence is a symmetry: the group
+  <math><msub><mi>ℤ</mi><mi>k</mi></msub></math> permutes the collectors and leaves the dispatcher invariant. The dispatcher interleaves:
+  page <math><mi>n</mi></math> goes to <math><msub><mi>ℛ</mi><mrow><mi>n</mi><mspace width="0.2em"/><mo lspace="0.2em">mod</mo><mspace width="0.2em"/><mi>k</mi></mrow></msub></math>.
+  There is no serial queue, and evacuation load is spread uniformly as a cyclic tensor.</p>
+
+  <p>Let pages leave <math><mi>𝒱</mi></math> at rate <math><mi>λ</mi></math>, let each collector absorb at rate
+  <math><mi>μ</mi></math>, and write <math><mi>ρ</mi><mo>=</mo><mi>λ</mi><mo>/</mo><mi>μ</mi></math> for the offered load in units of one collector.</p>
+
+  <div class="prop model">
+    <div class="h">Proposition 1 <span>· load split · <span class="chip model">model</span></span></div>
+    <p>Under (2.1) each collector receives every <math><mi>k</mi></math>-th page, at rate <math><mi>λ</mi><mo>/</mo><mi>k</mi></math>; its utilization is
+    <math><msub><mi>ρ</mi><mi>i</mi></msub><mo>=</mo><mi>ρ</mi><mo>/</mo><mi>k</mi></math>, the same for all <math><mi>i</mi></math>.</p>
+  </div>
+
+  <div class="prop model">
+    <div class="h">Proposition 2 <span>· tail of the sojourn time · <span class="chip model">model</span></span></div>
+    <p>With Poisson arrivals and exponential absorption, the sojourn time <math><mi>T</mi></math> in a collector is exponential with rate
+    <math><mi>μ</mi><mo>−</mo><mi>λ</mi><mo>/</mo><mi>k</mi></math>. Its <math><mi>q</mi></math>-quantile is</p>
+    <div class="eq">
+      <math display="block"><msub><mi>t</mi><mi>q</mi></msub><mo>·</mo><mi>μ</mi><mo>=</mo>
+        <mfrac><mrow><mo>−</mo><mi>ln</mi><mo>(</mo><mn>1</mn><mo>−</mo><mi>q</mi><mo>)</mo></mrow><mrow><mn>1</mn><mo>−</mo><mi>ρ</mi><mo>/</mo><mi>k</mi></mrow></mfrac><mo>,</mo>
+        <mspace width="1.5em"/><msub><mi>t</mi><mn>0.99</mn></msub><mo>·</mo><mi>μ</mi><mo>=</mo><mfrac><mrow><mi>ln</mi><mn>100</mn></mrow><mrow><mn>1</mn><mo>−</mo><mi>ρ</mi><mo>/</mo><mi>k</mi></mrow></mfrac><mo>.</mo></math>
+      <span class="tag">(2.2)</span>
+    </div>
+    <p>Interleaved dispatch makes each collector's arrivals Erlang-<math><mi>k</mi></math>, more regular than Poisson,
+    so (2.2) is an upper bound for <math><mi>k</mi><mo>≥</mo><mn>2</mn></math>.</p>
+  </div>
+
+  <div class="prop model">
+    <div class="h">Corollary 1 <span>· scale invariance · <span class="chip model">model</span></span></div>
+    <p>The right side of (2.2) depends only on <math><mi>ρ</mi><mo>/</mo><mi>k</mi></math>. Under
+    <math><mo>(</mo><mi>λ</mi><mo>,</mo><mi>μ</mi><mo>)</mo><mo>↦</mo><mo>(</mo><mi>c</mi><mi>λ</mi><mo>,</mo><mi>c</mi><mi>μ</mi><mo>)</mo></math>
+    the bound measured in units of <math><mn>1</mn><mo>/</mo><mi>μ</mi></math> does not move, and neither
+    <math><msub><mi>C</mi><mi>𝒱</mi></msub></math> nor <math><msub><mi>C</mi><mi>ℛ</mi></msub></math> appears in it. The method is orthogonal to the scale.</p>
+  </div>
+
+  <div class="prop model">
+    <div class="h">Corollary 2 <span>· one more lane · <span class="chip model">model</span></span></div>
+    <p>If <math><mi>ρ</mi><mo>≥</mo><mi>k</mi></math> the backlog grows without bound. The smallest bundle that restores a finite tail is
+    <math><msup><mi>k</mi><mo>*</mo></msup><mo>=</mo><mo>⌊</mo><mi>ρ</mi><mo>⌋</mo><mo>+</mo><mn>1</mn></math>; opening it changes no other parameter.</p>
+  </div>
+
+  <div class="card" id="tryit">
+    <div class="head"><h3>▶ Try it — the bound (2.2)</h3><span class="src">t<sub>0.99</sub>·μ against ρ, one curve per k</span></div>
+    <div class="controls">
+      <label>ρ <input type="range" id="rho" min="0" max="4" step="0.05" value="1.7"><output id="rhoOut">1.70</output></label>
+      <label>k <input type="range" id="kk" min="1" max="4" step="1" value="2"><output id="kOut">2</output></label>
+    </div>
+    <div class="legend" id="tryLegend"></div>
+    <div class="chart" id="boundChart"></div>
+    <p class="readout" id="boundOut" aria-live="polite"></p>
+  </div>
+
+  <div class="prop">
+    <div class="h">Realization <span>· <span class="chip design">deployed</span></span></div>
+    <p><math><mi>k</mi><mo>=</mo><mn>2</mn></math> compressed lanes of equal precedence; the kernel interleaves them. The existing lane is untouched:
+    the second is a path the system takes when it needs it, not a retuning.</p>
+  </div>
+
+  <!-- ===================================================================== -->
+  <h2 id="s3"><span class="no">§3</span>Homeostatic kernel and load decoupling</h2>
+  <p>Seven modules exchange information. A <b>1</b> in row <i>i</i>, column <i>j</i> means a direct flow from <i>i</i> to <i>j</i>.</p>
+  <div class="tw">
+    <table class="adj">
+      <caption class="sr" style="caption-side:bottom;text-align:left;padding:8px 12px;font-size:.8rem;color:var(--muted)">
+        H host processor · Ω kernel control · 𝒱 fast domain · ℛ collectors · A accelerator · S dissipation · F telemetry</caption>
+      <thead><tr><th>from \ to</th><th>H</th><th>Ω</th><th>𝒱</th><th>ℛ</th><th>A</th><th>S</th><th>F</th></tr></thead>
+      <tbody>
+        <tr><th>H</th><td class="off">0</td><td class="on">1</td><td class="on">1</td><td class="off">0</td><td class="on">1</td><td class="off">0</td><td class="off">0</td></tr>
+        <tr><th>Ω</th><td class="on">1</td><td class="off">0</td><td class="on">1</td><td class="on">1</td><td class="off">0</td><td class="on">1</td><td class="on">1</td></tr>
+        <tr><th>𝒱</th><td class="on">1</td><td class="on">1</td><td class="off">0</td><td class="on">1</td><td class="on">1</td><td class="off">0</td><td class="off">0</td></tr>
+        <tr><th>ℛ</th><td class="off">0</td><td class="on">1</td><td class="on">1</td><td class="off">0</td><td class="off">0</td><td class="off">0</td><td class="off">0</td></tr>
+        <tr><th>A</th><td class="off">0</td><td class="on">1</td><td class="on">1</td><td class="off">0</td><td class="off">0</td><td class="on">1</td><td class="off">0</td></tr>
+        <tr><th>S</th><td class="off">0</td><td class="on">1</td><td class="off">0</td><td class="off">0</td><td class="off">0</td><td class="off">0</td><td class="off">0</td></tr>
+        <tr><th>F</th><td class="off">0</td><td class="on">1</td><td class="off">0</td><td class="off">0</td><td class="off">0</td><td class="off">0</td><td class="off">0</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <p>The state at step <math><mi>t</mi></math> is the tuple</p>
+  <div class="eq">
+    <math display="block"><mi>Ψ</mi><mo>(</mo><mi>t</mi><mo>)</mo><mo>=</mo><mo>(</mo><mi>σ</mi><mo>,</mo>
+      <msub><mi>ℓ</mi><mn>1</mn></msub><mo>,</mo><mo>…</mo><mo>,</mo><msub><mi>ℓ</mi><mi>k</mi></msub><mo>,</mo><mi>P</mi><mo>,</mo><mi>θ</mi><mo>,</mo><mi>u</mi><mo>)</mo><mo>(</mo><mi>t</mi><mo>)</mo><mo>,</mo></math>
+    <span class="tag">(3.1)</span>
+  </div>
+  <p>with <math><mi>σ</mi></math> the occupancy of <math><mi>𝒱</mi></math>, <math><msub><mi>ℓ</mi><mi>i</mi></msub></math> the level of
+  <math><msub><mi>ℛ</mi><mi>i</mi></msub></math>, <math><mi>P</mi></math> the pressure (the fraction of time work is stalled on memory),
+  <math><mi>θ</mi></math> the thermal state and <math><mi>u</mi></math> the actuation. The master equations, coupled to (1.2):</p>
+  <div class="eq">
+    <math display="block"><mtable columnalign="right left" rowspacing="0.7em">
+      <mtr><mtd><msub><mi>ℓ</mi><mi>i</mi></msub><mo>(</mo><mi>t</mi><mo>+</mo><mn>1</mn><mo>)</mo></mtd>
+        <mtd><mo>=</mo><msub><mi>ℓ</mi><mi>i</mi></msub><mo>(</mo><mi>t</mi><mo>)</mo><mo>+</mo><msub><mi>e</mi><mi>i</mi></msub><mo>(</mo><mi>t</mi><mo>)</mo><mo>−</mo><msub><mi>r</mi><mi>i</mi></msub><mo>(</mo><mi>t</mi><mo>)</mo><mo>,</mo>
+          <mspace width="1em"/><msub><mi>e</mi><mi>i</mi></msub><mo>(</mo><mi>t</mi><mo>)</mo><mo>=</mo><mi>e</mi><mo>(</mo><mi>t</mi><mo>)</mo><mspace width="0.2em"/><msub><mn>𝟙</mn><mrow><mi>n</mi><mo>(</mo><mi>t</mi><mo>)</mo><mo>≡</mo><mi>i</mi><mspace width="0.3em"/><mo>(</mo><mi>mod</mi><mspace width="0.2em"/><mi>k</mi><mo>)</mo></mrow></msub></mtd></mtr>
+      <mtr><mtd><mi>u</mi><mo>(</mo><mi>t</mi><mo>+</mo><mn>1</mn><mo>)</mo></mtd>
+        <mtd><mo>=</mo><mi>u</mi><mo>(</mo><mi>t</mi><mo>)</mo><mo>+</mo><mi>η</mi><mo>(</mo><mi>t</mi><mo>)</mo><mspace width="0.15em"/><mo>∇</mo><mi>P</mi><mo>(</mo><mi>t</mi><mo>)</mo><mo>,</mo>
+          <mspace width="1em"/><mi>η</mi><mo>(</mo><mi>t</mi><mo>)</mo><mo>=</mo><mi>η</mi><mo>[</mo><mi>Ψ</mi><mo>(</mo><mi>t</mi><mo>)</mo><mo>]</mo></mtd></mtr>
+      <mtr><mtd><mi>θ</mi><mo>(</mo><mi>t</mi><mo>+</mo><mn>1</mn><mo>)</mo></mtd>
+        <mtd><mo>=</mo><mi>θ</mi><mo>(</mo><mi>t</mi><mo>)</mo><mo>+</mo><msub><mi>P</mi><mtext>in</mtext></msub><mo>(</mo><mi>t</mi><mo>)</mo><mo>−</mo><mi>κ</mi><mo>(</mo><mi>u</mi><mo>(</mo><mi>t</mi><mo>)</mo><mo>)</mo><mspace width="0.15em"/><mo>(</mo><mi>θ</mi><mo>(</mo><mi>t</mi><mo>)</mo><mo>−</mo><msub><mi>θ</mi><mn>0</mn></msub><mo>)</mo></mtd></mtr>
+    </mtable></math>
+    <span class="tag">(3.2)</span>
+  </div>
+  <p>The gain <math><mi>η</mi></math> is read from the state, not fixed in advance: the control law responds to the
+  pressure gradient and carries no timing constant of its own. Dissipation is a term of the balance, not an
+  external event: the actuator <math><mi>κ</mi><mo>(</mo><mi>u</mi><mo>)</mo></math> rises with the thermal flux before the silicon
+  reaches its throttling plateau.</p>
+
+  <div class="prop">
+    <div class="h">Observation 2 <span>· asymmetric decoupling · <span class="chip measured">measured</span></span></div>
+    <p>With the accelerator at 96–100 % duty cycle, the host processor holds
+    <math><mi>𝔼</mi><mo>[</mo><msub><mtext>load</mtext><mtext>host</mtext></msub><mo>]</mo><mo>≈</mo><mn>0.19</mn><mo>–</mo><mn>0.21</mn></math>:
+    more than 75 % of its capacity stays free. Contention in the accelerator does not reach the control plane.</p>
+  </div>
+
+  <!-- ===================================================================== -->
+  <h2 id="s4"><span class="no">§4</span>Conclusions</h2>
+  <ol>
+    <li><b>Scale is orthogonal to the method.</b> Flow conservation (1.2) and the bound (2.2) contain no size;
+      they hold unchanged from a single board to a data center.</li>
+    <li><b>No fixed constants.</b> Feedback read from the state replaces rigid timing constants and removes the
+      single points of resonance where a tuned system fails.</li>
+    <li><b>Kernel modules can carry the algebra.</b> Low-level optimization decouples from the rigidity of
+      conventional software and approaches the physical limit of the silicon it runs on.</li>
+  </ol>
+
+  <h3>Status of each statement</h3>
+  <div class="tw">
+    <table>
+      <thead><tr><th>Statement</th><th>Basis</th><th>Status</th></tr></thead>
+      <tbody>
+        <tr><td>(2.1) equal-precedence direct sum</td><td><math><mi>k</mi><mo>=</mo><mn>2</mn></math> compressed lanes, interleaved</td><td><span class="chip design">deployed</span></td></tr>
+        <tr><td>(2.2) tail bound, Corollaries 1–2</td><td>exponential absorption; exact for <math><mi>k</mi><mo>=</mo><mn>1</mn></math>, upper bound for <math><mi>k</mi><mo>≥</mo><mn>2</mn></math></td><td><span class="chip model">model</span></td></tr>
+        <tr><td>p99 · p999 · max −90 % to −99 %</td><td>8+ A/B campaigns, <math><mi>n</mi><mo>≥</mo><mn>3</mn></math>, <a href="../evidence/#ab">evidence</a></td><td><span class="chip measured">measured</span></td></tr>
+        <tr><td>p50 +10.5 % to +13.8 %</td><td>same campaigns; the declared price of the tail</td><td><span class="chip measured">measured</span></td></tr>
+        <tr><td>Observation 1, fast domain ≥ 99.75 %</td><td>sustained, no panic or reset</td><td><span class="chip measured">measured</span></td></tr>
+        <tr><td>Observation 2, host 0.19–0.21</td><td>accelerator at 96–100 % duty</td><td><span class="chip measured">measured</span></td></tr>
+        <tr><td>Robertson–Schrödinger on transport : position</td><td>Physlib <a href="https://github.com/leanprover-community/physlib/pull/1723">#1723</a>, <a href="https://github.com/leanprover-community/physlib/pull/1725">#1725</a>; <a href="https://naype888-cloud.github.io/BACQM-NRS3/">BACQM-NRS³</a></td><td><span class="chip lean">Lean 4</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p class="lead" style="font-size:.92rem">The mathematical substrate — the uncertainty relation on the transport : position pair, and its
+  determinant on the cube and the three-torus — is checked in Lean 4 with standard axioms:
+  <a href="https://github.com/naype888-cloud/nava-robertson-schrodinger">nava-robertson-schrodinger</a> ·
+  <a href="https://naype888-cloud.github.io/BACQM-NRS3/">BACQM-NRS³</a> ·
+  <a href="https://github.com/leanprover-community/physlib/pulls?q=is%3Apr+is%3Amerged+author%3Anaype888-cloud">45 merged Physlib pull requests</a>.
+  Lean checks the mathematics; the measurements check the tail.</p>
+
+  <nav class="pager" aria-label="Pages">
+    <a href="../">← BACQM Systems</a>
+    <a href="../evidence/">Evidence →</a>
+  </nav>
+  <footer>© 2026 BACQM Systems Research Group · kernel source private · mathematics and data open</footer>
+</main>
+<script src="../shared/js/bound.js?v=20261023" defer></script>
+</body>
+</html>

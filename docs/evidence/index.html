@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Evidence — BACQM Systems</title>
+<meta name="description" content="A/B campaigns against an unmodified baseline and weekly passive telemetry of wakeup latency, with the method.">
+<link rel="icon" href="../media/favicon.svg" type="image/svg+xml">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="BACQM Systems">
+<meta property="og:title" content="Evidence — measured, not assumed">
+<meta property="og:description" content="A/B campaigns against an unmodified baseline and weekly passive telemetry, with the method.">
+<meta property="og:url" content="https://naype888-cloud.github.io/bacqm-systems/evidence/">
+<meta property="og:image" content="https://naype888-cloud.github.io/bacqm-systems/media/og.png">
+<script src="../shared/js/theme.js?v=20261023" data-toggle></script>
+<link rel="stylesheet" href="../shared/css/page.css?v=20261023">
+</head>
+<body>
+<main>
+  <nav class="navbar" aria-label="Site">
+    <a class="brand" href="../">BACQM Systems<span class="sect"> · Evidence</span></a>
+    <a class="pill" href="../formal/">Formal</a>
+    <a class="pill" href="./" aria-current="page">Evidence</a>
+    <button class="pill" id="theme" type="button">☀ Light</button>
+  </nav>
+
+  <p class="series">BACQM Systems Research Group · Instrumentation</p>
+  <h1>Measured, not assumed</h1>
+  <div class="rule" aria-hidden="true"></div>
+  <p class="lead">Every figure on this site comes from instrumentation at the kernel–hardware interface, under real
+  work, against a baseline that is the same kernel with nothing of ours loaded. The probe never adds load to flatter
+  itself: what the system does while it is observed is what it does.</p>
+
+  <!-- ===================================================================== -->
+  <h2 id="ab"><span class="no">E1</span>A/B campaigns against the baseline</h2>
+  <p><b>Protocol.</b> CONTROL is the unmodified kernel with its default fair scheduler. Each campaign alternates
+  CONTROL and BACQM on the same node, <math><mi>n</mi><mo>≥</mo><mn>3</mn></math> runs per arm, and reports the median. A campaign counts only if the
+  thermal state stays within 5 °C across its runs; two campaigns failed that test and are excluded.</p>
+  <div class="tw">
+    <table>
+      <thead><tr><th>Quantile</th><th class="num">BACQM against CONTROL</th><th>Basis</th></tr></thead>
+      <tbody>
+        <tr><td>p99 · p999 · max</td><td class="num"><b>−90 % to −99 %</b></td><td>8+ A/B campaigns, <math><mi>n</mi><mo>≥</mo><mn>3</mn></math> each</td></tr>
+        <tr><td>p50</td><td class="num">+10.5 % to +13.8 %</td><td>same campaigns</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p>The median rises a little and the tail collapses. That is a declared Pareto choice of the scheduler's
+  architecture, not a tuning artefact: the tail is where a saturated system fails.</p>
+
+  <!-- ===================================================================== -->
+  <h2 id="passive"><span class="no">E2</span>Passive telemetry, weekly</h2>
+  <p><b>Probe.</b> Every 30 minutes, under normal use and with no synthetic load, a 5-second probe measures the wakeup
+  delay of a periodic 1 ms thread. 2,582 samples with the scheduler active, 15 Aug – 14 Oct 2026.</p>
+
+  <div class="card">
+    <div class="head"><h3>Wakeup delay, weekly medians</h3><span class="src">µs · <a href="https://github.com/naype888-cloud/bacqm-systems/blob/main/data/passive_weekly_medians.csv">passive_weekly_medians.csv</a></span></div>
+    <div class="legend"><span><i style="background:var(--s1)"></i>p50</span><span><i style="background:var(--s3)"></i>p99</span><span><i style="background:var(--s4)"></i>p999</span></div>
+    <div class="chart" id="passiveChart"></div>
+    <details class="data"><summary>Table view</summary>
+      <div class="tw"><table id="passiveTable">
+        <thead><tr><th>ISO week</th><th class="num">samples</th><th class="num">p50</th><th class="num">p99</th><th class="num">p999</th><th class="num">max</th><th class="num">missed</th></tr></thead>
+        <tbody></tbody></table></div>
+    </details>
+  </div>
+
+  <div class="tw">
+    <table>
+      <thead><tr><th>Interval</th><th class="num">Samples</th><th class="num">p50</th><th class="num">p99</th><th class="num">p999</th><th class="num">max</th><th class="num">Missed cycles</th></tr></thead>
+      <tbody>
+        <tr><td>15 Aug – 26 Sep</td><td class="num">1,791</td><td class="num">83.3 µs</td><td class="num">119.8 µs</td><td class="num">317.0 µs</td><td class="num">513.9 µs</td><td class="num">0.080 %</td></tr>
+        <tr><td>27 Sep – 14 Oct</td><td class="num">791</td><td class="num">87.3 µs</td><td class="num">259.9 µs</td><td class="num">415.0 µs</td><td class="num">559.6 µs</td><td class="num">0.013 %</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="prop">
+    <div class="h">The step of 26 September <span>· non-invasive measurement</span></div>
+    <p>Until 26 September a system thread woke every 1 ms, the same period as the probe, and that favoured the probe.
+    Since then it sleeps when there is no work and no longer perturbs the system. An A/B on 15 October with the same
+    module confirms it: with the 1 ms pulse the probe reads p99 = 159 µs, without it 280 µs. We do not perturb the
+    system to improve a measurement, so the second interval is the one that stands; missed cycles fell from 0.080 %
+    to 0.013 % across the same step. These figures describe the probe, not a workload.</p>
+  </div>
+
+  <!-- ===================================================================== -->
+  <h2 id="substrate"><span class="no">E3</span>Substrate</h2>
+  <p>The implementation lives in kernel space and names no device, no vendor and no size: every bound it uses is
+  read from the running system. One source, two instruction-set architectures.</p>
+  <div class="tw">
+    <table>
+      <thead><tr><th>Architecture</th><th>State</th></tr></thead>
+      <tbody>
+        <tr><td>x86-64</td><td>continuous operation; every measurement on this page</td></tr>
+        <tr><td>ARM64</td><td>modules loaded and verified, 21 Sep 2026</td></tr>
+        <tr><td>Multi-node fabric</td><td>pilot stage: the law is the same, the measurement is next</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p>Kernel source is private. Methodology, data and the mathematics are open. For a pilot, open an
+  <a href="https://github.com/naype888-cloud/bacqm-systems/issues">issue</a>.</p>
+
+  <nav class="pager" aria-label="Pages">
+    <a href="../formal/">← Formal note</a>
+    <a href="../">BACQM Systems →</a>
+  </nav>
+  <footer>© 2026 BACQM Systems Research Group · kernel source private · mathematics and data open</footer>
+</main>
+<script src="../shared/js/passive.js?v=20261023" defer></script>
+</body>
+</html>
