@@ -1,4 +1,4 @@
-/* Landing: the living manifold, the title, the results, the two doors.
+/* Landing: the living manifold, the title, the results, the three doors.
    Serif for the mathematics, monospace for operators; blue is structure, warm is flow. */
 @font-face { font-family: "Instrument Serif"; font-style: normal; font-weight: 400; font-display: swap;
   src: url("../../media/fonts/instrument-serif-latin-400-normal.woff2") format("woff2"); }
@@ -88,7 +88,7 @@ html:not(.js) .progress { display: none; }
 @keyframes rise { from { opacity: 0; transform: translateY(16px); } }
 
 /* ---- doors --------------------------------------------------------------- */
-.doors { display: grid; grid-template-columns: 1fr 1fr; border-top: 1px solid var(--line); }
+.doors { display: grid; grid-template-columns: repeat(3, 1fr); border-top: 1px solid var(--line); }
 .door { position: relative; display: grid; grid-template-columns: 1fr auto; grid-template-rows: auto auto auto; column-gap: 24px;
   padding: clamp(22px, 3.4vh, 36px) clamp(16px, 5vw, 88px); text-decoration: none; color: #f2f1ee;
   background: rgba(13, 21, 32, .35); overflow: hidden; isolation: isolate;
@@ -109,6 +109,10 @@ html:not(.js) .progress { display: none; }
 .door:focus-visible { box-shadow: inset 0 0 0 2px var(--blue); }
 
 /* ---- small screens ------------------------------------------------------- */
+@media (max-width: 1100px) {
+  .door { padding-left: clamp(16px, 3vw, 40px); padding-right: clamp(16px, 3vw, 40px); }
+  .door .go { width: 40px; height: 40px; }
+}
 @media (max-width: 860px) {
   .hero { grid-template-columns: 1fr; gap: 0; padding-top: 12px; }
   .scene { max-width: 520px; max-height: 56svh; }

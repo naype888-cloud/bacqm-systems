@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Evidence — BACQM Systems</title>
-<meta name="description" content="A/B campaigns against an unmodified baseline and weekly passive telemetry of wakeup latency, with the method.">
+<meta name="description" content="A/B campaigns against an unmodified baseline, weekly passive telemetry, saturation of the fast domain over 425,860 frames and the transport ledger, with the method.">
 <link rel="icon" href="../media/favicon.svg" type="image/svg+xml">
 <meta property="og:type" content="article">
 <meta property="og:site_name" content="BACQM Systems">
@@ -12,8 +12,8 @@
 <meta property="og:description" content="A/B campaigns against an unmodified baseline and weekly passive telemetry, with the method.">
 <meta property="og:url" content="https://naype888-cloud.github.io/bacqm-systems/evidence/">
 <meta property="og:image" content="https://naype888-cloud.github.io/bacqm-systems/media/og.png">
-<script src="../shared/js/theme.js?v=20261023" data-toggle></script>
-<link rel="stylesheet" href="../shared/css/page.css?v=20261023">
+<script src="../shared/js/theme.js?v=20261024" data-toggle></script>
+<link rel="stylesheet" href="../shared/css/page.css?v=20261024">
 </head>
 <body>
 <main>
@@ -28,7 +28,8 @@
   <h1>Measured, not assumed</h1>
   <div class="rule" aria-hidden="true"></div>
   <p class="lead">Every figure on this site comes from instrumentation at the kernel–hardware interface, under real
-  work, against a baseline that is the same kernel with nothing of ours loaded. The probe never adds load to flatter
+  work. Differences are taken against a baseline that is the same kernel with nothing of ours loaded (E1); shapes are taken
+  on the deployed system itself (E2–E4). The probe never adds load to flatter
   itself: what the system does while it is observed is what it does.</p>
 
   <!-- ===================================================================== -->
@@ -84,7 +85,78 @@
   </div>
 
   <!-- ===================================================================== -->
-  <h2 id="substrate"><span class="no">E3</span>Substrate</h2>
+  <h2 id="saturation"><span class="no">E3</span>Saturation of the fast domain</h2>
+  <p><b>Workload.</b> A real-time graphics pipeline whose resident set exceeds the fast domain, run as a user plays it: seven
+  runs on 23–24 Oct 2026, 425,860 frames, 133 minutes. It is chosen because it drives
+  <math><mi>s</mi><mo>=</mo><msub><mrow><mo>‖</mo><mi>σ</mi><mo>‖</mo></mrow><mi>𝒱</mi></msub><mo>/</mo><msub><mi>C</mi><mi>𝒱</mi></msub></math> to the boundary
+  (maximum 0.9984) while the accelerator runs near full duty: the regime in which (1.1) predicts a discontinuity.</p>
+  <p><b>Observable.</b> The frame period <math><msub><mi>τ</mi><mi>f</mi></msub></math>, recorded per frame by an in-process overlay, in units of the
+  presentation period <math><msub><mi>T</mi><mn>0</mn></msub><mo>=</mo><mn>1</mn><mo>/</mo><mn>60</mn></math> s. Occupancy, accelerator duty and host load are recorded on the
+  same frame and enter only as ratios. <b>Arm.</b> Single arm, BACQM active: this campaign tests the shape of
+  <math><msub><mi>q</mi><mi>p</mi></msub><mo>(</mo><mi>s</mi><mo>)</mo></math> near <math><mi>s</mi><mo>=</mo><mn>1</mn></math>, not a difference against CONTROL (that is E1).
+  Kernel log over the seven runs: no panic, no out-of-memory action, no guard termination.</p>
+
+  <div class="card">
+    <div class="head"><h3>Frame period per occupancy stratum</h3><span class="src">τ/T₀ · <a href="https://github.com/naype888-cloud/bacqm-systems/blob/main/data/saturation_strata.csv">saturation_strata.csv</a></span></div>
+    <div class="legend"><span><i style="background:var(--s1)"></i>q50</span><span><i style="background:var(--s2)"></i>q95</span><span><i style="background:var(--s4)"></i>q99</span></div>
+    <div class="chart" id="strataChart"></div>
+    <details class="data" open><summary>Table view</summary>
+      <div class="tw"><table id="strataTable">
+        <thead><tr><th>Stratum of s</th><th class="num">frames</th><th class="num">q50</th><th class="num">q95</th><th class="num">q99</th><th class="num">q99.9</th><th class="num">τ &gt; 3 T₀</th><th class="num">host load</th></tr></thead>
+        <tbody></tbody></table></div>
+    </details>
+  </div>
+  <p>The median does not move: 1.01–1.04 <math><msub><mi>T</mi><mn>0</mn></msub></math> in every stratum. For
+  <math><mi>s</mi><mo>≥</mo><mn>0.5</mn></math> the p99 stays at or below 4.85 <math><msub><mi>T</mi><mn>0</mn></msub></math>, and the top stratum
+  <math><mi>s</mi><mo>≥</mo><mn>0.98</mn></math> has a lighter tail (p99 3.55) than the one beneath it (4.84). The only heavy tail is at
+  <math><mi>s</mi><mo>&lt;</mo><mn>0.5</mn></math>, where the frames are asset loading and the fast domain is nearly empty. This is Observation 4 of the
+  <a href="../formal/#s5">formal note</a>.</p>
+
+  <div class="card">
+    <div class="head"><h3>One run, 15-second windows</h3><span class="src"><a href="https://github.com/naype888-cloud/bacqm-systems/blob/main/data/saturation_windows_15s.csv">saturation_windows_15s.csv</a></span></div>
+    <div class="runpick" id="runPick" role="group" aria-label="Choose a run"></div>
+    <div class="legend"><span><i style="background:var(--c1)"></i>s = σ/C𝒱</span><span><i style="background:var(--c2)"></i>accelerator duty</span><span><i style="background:var(--c3)"></i>host load</span><span><i style="background:var(--s1)"></i>q50</span><span><i style="background:var(--s4)"></i>q99</span></div>
+    <div class="chart" id="runChart"></div>
+    <p class="readout" id="runOut" aria-live="polite"></p>
+    <details class="data"><summary>Table view</summary>
+      <div class="tw"><table id="runTable">
+        <thead><tr><th class="num">t (min)</th><th class="num">frames</th><th class="num">s</th><th class="num">duty</th><th class="num">host</th><th class="num">q50 / T₀</th><th class="num">q99 / T₀</th></tr></thead>
+        <tbody></tbody></table></div>
+    </details>
+  </div>
+  <p>The shaded band is <math><mi>s</mi><mo>≥</mo><mn>0.95</mn></math>. When occupancy and duty rise together the median frame period rises with the duty
+  (Observation 5: 1.32 <math><msub><mi>T</mi><mn>0</mn></msub></math> on the 31,222 frames with <math><mi>s</mi><mo>≥</mo><mn>0.95</mn></math> and duty ≥ 0.90), while the host
+  load stays at 0.20: the pipeline is bound by the accelerator's compute, not by the boundary of its memory. Within single
+  15-second windows the p99 can leave the scale (▲): these are the rare long frames that the p99.9 column counts, finite and
+  isolated, never a sustained stall.</p>
+
+  <div class="tw">
+    <table id="sessionTable">
+      <thead><tr><th>Run (local start)</th><th class="num">frames</th><th class="num">minutes</th><th class="num">max s</th><th class="num">q50 / T₀</th><th class="num">q99 / T₀</th><th class="num">q99.9 / T₀</th><th class="num">host | duty ≥ 0.9</th></tr></thead>
+      <tbody></tbody>
+    </table>
+  </div>
+
+  <!-- ===================================================================== -->
+  <h2 id="ledger"><span class="no">E4</span>The transport ledger</h2>
+  <p>Cumulative counters of the transport operator <math><mi>𝒯</mi></math> of §4, read at the kernel interface on 24 Oct 2026. Counts are in
+  granules, the unit the operator reads from the running system; requests alternate direction.</p>
+  <div class="tw">
+    <table>
+      <thead><tr><th>Direction</th><th class="num">requested</th><th class="num">completed</th><th class="num">rejected</th></tr></thead>
+      <tbody>
+        <tr><td>𝒱 → ℛ (evacuation)</td><td class="num">630</td><td class="num">630</td><td class="num">0</td></tr>
+        <tr><td>ℛ → 𝒱 (admission)</td><td class="num">630</td><td class="num">626</td><td class="num">4</td></tr>
+        <tr><td><b>Total</b></td><td class="num"><b>1,260</b></td><td class="num"><b>1,256</b></td><td class="num"><b>4</b></td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p>Requested mass equals completed plus rejected mass to the byte; the net transport
+  <math><mi>Δ</mi><mo>=</mo><mn>630</mn><mo>−</mo><mn>626</mn><mo>=</mo><mn>4</mn></math> granules is exactly the rejected set, as Proposition 3 requires, and every rejection
+  was an admission into a fast domain at its boundary. Completion 0.9968, imbalance 0.32 % of the transported mass.</p>
+
+  <!-- ===================================================================== -->
+  <h2 id="substrate"><span class="no">E5</span>Substrate</h2>
   <p>The implementation lives in kernel space and names no device, no vendor and no size: every bound it uses is
   read from the running system. One source, two instruction-set architectures.</p>
   <div class="tw">
@@ -106,6 +178,7 @@
   </nav>
   <footer>© 2026 BACQM Systems Research Group · kernel source private · mathematics and data open</footer>
 </main>
-<script src="../shared/js/passive.js?v=20261023" defer></script>
+<script src="../shared/js/passive.js?v=20261024" defer></script>
+<script src="../shared/js/saturation.js?v=20261024" defer></script>
 </body>
 </html>

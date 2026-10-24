@@ -4,16 +4,16 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Formal note — BACQM Systems</title>
-<meta name="description" content="Scale-invariant memory dynamics under asymptotic saturation: state space, the equal-precedence multi-way topology, the master equations of the kernel.">
+<meta name="description" content="Scale-invariant memory dynamics under asymptotic saturation: equal-precedence topology, the master equations of the kernel, an exactly closed transport ledger, saturation without divergence, and the Π-reduction of a law without prescriptions.">
 <link rel="icon" href="../media/favicon.svg" type="image/svg+xml">
 <meta property="og:type" content="article">
 <meta property="og:site_name" content="BACQM Systems">
 <meta property="og:title" content="Scale-invariant memory dynamics under asymptotic saturation">
-<meta property="og:description" content="State space, the equal-precedence multi-way topology, the master equations of the kernel.">
+<meta property="og:description" content="Equal-precedence topology, master equations, an exact transport ledger, saturation without divergence, Π-reduction.">
 <meta property="og:url" content="https://naype888-cloud.github.io/bacqm-systems/formal/">
 <meta property="og:image" content="https://naype888-cloud.github.io/bacqm-systems/media/og.png">
-<script src="../shared/js/theme.js?v=20261023" data-toggle></script>
-<link rel="stylesheet" href="../shared/css/page.css?v=20261023">
+<script src="../shared/js/theme.js?v=20261024" data-toggle></script>
+<link rel="stylesheet" href="../shared/css/page.css?v=20261024">
 </head>
 <body>
 <main>
@@ -33,11 +33,14 @@
     <p>We give an algebraic and operational formulation of hierarchical memory under asymptotic saturation.
     Deterministic allocation policies treat memory as a static volume; as demand approaches the physical
     boundary their latency diverges. Here memory is a flow. The elastic domain is split into <i>k</i>
-    collectors of equal precedence, served in turn, and a kernel control law with no fixed constants
-    follows the pressure gradient. The tail bound that results depends only on dimensionless ratios, so the
-    same law holds at every scale of the address space. Measured on the reference node: tail latency
-    −90 % to −99 % against an unmodified baseline, the fast domain held at ≥ 99.75 % occupancy with no
-    null-state transition, and the host processor at 0.19–0.21 mean load while the coprocessor runs saturated.</p>
+    collectors of equal precedence, served in turn; a bidirectional transport operator couples it to the fast
+    domain with an exactly closed ledger; and the kernel control law contains no prescription of size, so by
+    the Π-theorem it is a function of dimensionless groups alone and is equivariant under dilation of every
+    capacity. The tail bound that results depends only on <math><mi>ρ</mi><mo>/</mo><mi>k</mi></math>. Measured on the reference node: tail latency
+    −90 % to −99 % against an unmodified baseline; the fast domain held at ≥ 99.75 % occupancy with no
+    null-state transition; across 425,860 frames of a saturating graphics workload the median frame period stays
+    within 1.04 presentation periods in every occupancy stratum and the p99 stays below 4.9, with no discontinuity
+    at the boundary; and the host processor holds 0.20 mean load while the coprocessor runs at ≥ 90 % duty.</p>
   </section>
 
   <!-- ===================================================================== -->
@@ -199,14 +202,143 @@
   </div>
 
   <!-- ===================================================================== -->
-  <h2 id="s4"><span class="no">§4</span>Conclusions</h2>
+  <h2 id="s4"><span class="no">§4</span>The transport operator and the closure of the ledger</h2>
+  <p>Equation (1.2) is a balance; a balance is only as good as its ledger. Between the fast domain and the
+  elastic domain the kernel runs a bidirectional transport operator</p>
+  <div class="eq">
+    <math display="block"><mi>𝒯</mi><mo>:</mo><mspace width="0.3em"/><mi>𝒱</mi><mo>⇄</mo><mi>ℛ</mi><mo>,</mo>
+      <mspace width="1.5em"/><mi>𝒯</mi><mo>(</mo><mi>n</mi><mo>)</mo><mo>=</mo>
+      <mrow><mo>{</mo><mtable columnalign="left left"><mtr><mtd><mi>𝒱</mi><mo>→</mo><mi>ℛ</mi></mtd><mtd><mi>n</mi><mspace width="0.3em"/><mtext>odd</mtext></mtd></mtr>
+      <mtr><mtd><mi>ℛ</mi><mo>→</mo><mi>𝒱</mi></mtd><mtd><mi>n</mi><mspace width="0.3em"/><mtext>even</mtext></mtd></mtr></mtable></mrow><mo>,</mo></math>
+    <span class="tag">(4.1)</span>
+  </div>
+  <p>acting on granules of a fixed mass <math><msub><mi>m</mi><mi>g</mi></msub></math> read from the running system. The dispatch alternates
+  direction, so (4.1) is the <math><msub><mi>ℤ</mi><mn>2</mn></msub></math> case of the cyclic symmetry of §2. Every request <math><mi>n</mi></math>
+  ends in exactly one of two states, completed or rejected, and both are counted in the same unit.</p>
+
+  <div class="prop def">
+    <div class="h">Definition 1 <span>· ledger</span></div>
+    <p>For a window of <math><mi>R</mi></math> requests write <math><msub><mi>R</mi><mo>↓</mo></msub><mo>,</mo><msub><mi>R</mi><mo>↑</mo></msub></math> for the requests toward
+    <math><mi>ℛ</mi></math> and toward <math><mi>𝒱</mi></math>, <math><msub><mi>N</mi><mo>↓</mo></msub><mo>,</mo><msub><mi>N</mi><mo>↑</mo></msub></math> for those completed and
+    <math><msub><mi>F</mi><mo>↓</mo></msub><mo>,</mo><msub><mi>F</mi><mo>↑</mo></msub></math> for those rejected. The ledger is <i>closed</i> if
+    <math><msub><mi>R</mi><mo>•</mo></msub><mo>=</mo><msub><mi>N</mi><mo>•</mo></msub><mo>+</mo><msub><mi>F</mi><mo>•</mo></msub></math> in each direction, to the unit of mass.</p>
+  </div>
+
+  <div class="prop model">
+    <div class="h">Proposition 3 <span>· the residual is the rejected set · <span class="chip model">model</span></span></div>
+    <p>Under alternating dispatch and a closed ledger, <math><msub><mi>R</mi><mo>↓</mo></msub><mo>=</mo><msub><mi>R</mi><mo>↑</mo></msub></math> for even <math><mi>R</mi></math>, and the net transport is</p>
+    <div class="eq">
+      <math display="block"><mi>Δ</mi><mo>≔</mo><msub><mi>N</mi><mo>↓</mo></msub><mo>−</mo><msub><mi>N</mi><mo>↑</mo></msub><mo>=</mo><msub><mi>F</mi><mo>↑</mo></msub><mo>−</mo><msub><mi>F</mi><mo>↓</mo></msub><mo>.</mo></math>
+      <span class="tag">(4.2)</span>
+    </div>
+    <p class="proof">Subtract the two closure identities and use <math><msub><mi>R</mi><mo>↓</mo></msub><mo>=</mo><msub><mi>R</mi><mo>↑</mo></msub></math>.</p>
+    <p>The operator therefore moves no net mass by itself: any drift of <math><mi>σ</mi></math> through <math><mi>𝒯</mi></math> is accounted for, granule by granule,
+    by the requests the fast domain refused.</p>
+  </div>
+
+  <div class="prop">
+    <div class="h">Observation 3 <span>· exact closure · <span class="chip measured">measured</span></span></div>
+    <p>Cumulative counters of the deployed operator, read at the kernel interface on 24 Oct 2026:
+    <math><mi>R</mi><mo>=</mo><mn>1260</mn></math>, <math><mi>N</mi><mo>=</mo><mn>1256</mn></math> (completion 0.9968), <math><mi>F</mi><mo>=</mo><mn>4</mn></math>;
+    <math><msub><mi>N</mi><mo>↓</mo></msub><mo>=</mo><mn>630</mn></math>, <math><msub><mi>N</mi><mo>↑</mo></msub><mo>=</mo><mn>626</mn></math>.
+    Requested mass equals completed plus rejected mass exactly, and <math><mi>Δ</mi><mo>=</mo><mn>4</mn></math> granules
+    <math><mo>=</mo><msub><mi>F</mi><mo>↑</mo></msub></math>: all four rejections were admissions into a fast domain at its boundary, as (4.2) requires.
+    Net imbalance: 0.32 % of the transported mass. <a href="../evidence/#ledger">Evidence E4</a>.</p>
+  </div>
+
+  <!-- ===================================================================== -->
+  <h2 id="s5"><span class="no">§5</span>Saturation without divergence</h2>
+  <p>Statement (1.1) predicts, for a deterministic allocator, a latency discontinuity as
+  <math><mi>s</mi><mo>≔</mo><msub><mrow><mo>‖</mo><mi>σ</mi><mo>‖</mo></mrow><mi>𝒱</mi></msub><mo>/</mo><msub><mi>C</mi><mi>𝒱</mi></msub><mo>→</mo><mn>1</mn></math>.
+  We test it on a workload that is built to saturate the fast domain: a real-time graphics pipeline whose frame period
+  <math><msub><mi>τ</mi><mi>f</mi></msub></math> is the latency observable, measured per frame, in units of the presentation period
+  <math><msub><mi>T</mi><mn>0</mn></msub></math> so that the result carries no device scale.</p>
+  <div class="eq">
+    <math display="block"><msub><mi>q</mi><mi>p</mi></msub><mo>(</mo><mi>s</mi><mo>)</mo><mo>≔</mo>
+      <mfrac><mn>1</mn><msub><mi>T</mi><mn>0</mn></msub></mfrac><mspace width="0.2em"/><msub><mi>Q</mi><mi>p</mi></msub><mo>[</mo><mspace width="0.2em"/><msub><mi>τ</mi><mi>f</mi></msub><mo>∣</mo><mi>s</mi><mo>∈</mo><msub><mi>I</mi><mi>j</mi></msub><mspace width="0.2em"/><mo>]</mo><mo>,</mo>
+      <mspace width="1.5em"/><msub><mi>I</mi><mi>j</mi></msub><mo>∈</mo><mo>{</mo><mo>[</mo><mn>0</mn><mo>,</mo><mn>.5</mn><mo>)</mo><mo>,</mo><mo>…</mo><mo>,</mo><mo>[</mo><mn>.98</mn><mo>,</mo><mn>1</mn><mo>]</mo><mo>}</mo><mo>,</mo></math>
+    <span class="tag">(5.1)</span>
+  </div>
+  <p>the conditional <math><mi>p</mi></math>-quantile of the frame period in the occupancy stratum <math><msub><mi>I</mi><mi>j</mi></msub></math>. A latency
+  discontinuity at the boundary means <math><msub><mi>q</mi><mi>p</mi></msub><mo>(</mo><mi>s</mi><mo>)</mo><mo>→</mo><mi>∞</mi></math> as <math><mi>s</mi><mo>→</mo><mn>1</mn></math> for some fixed <math><mi>p</mi></math>.</p>
+
+  <div class="prop">
+    <div class="h">Observation 4 <span>· bounded at the boundary · <span class="chip measured">measured</span></span></div>
+    <p>Seven runs, 425,860 frames, 23–24 Oct 2026. In every stratum with <math><mi>s</mi><mo>≥</mo><mn>0.5</mn></math> (97.3 % of the frames), up to and including
+    <math><mi>s</mi><mo>≥</mo><mn>0.98</mn></math> (29,863 frames),</p>
+    <div class="eq">
+      <math display="block"><mn>1.01</mn><mo>≤</mo><msub><mi>q</mi><mn>0.5</mn></msub><mo>(</mo><mi>s</mi><mo>)</mo><mo>≤</mo><mn>1.04</mn><mo>,</mo>
+        <mspace width="1.5em"/><msub><mi>q</mi><mn>0.99</mn></msub><mo>(</mo><mi>s</mi><mo>)</mo><mo>≤</mo><mn>4.85</mn><mo>,</mo></math>
+      <span class="tag">(5.2)</span>
+    </div>
+    <p>and the p99 of the top stratum (3.55) lies below that of the stratum beneath it (4.84): the tail does not grow
+    monotonically into the boundary. The p99.9 of the top stratum is 17.3: rare long frames exist at the boundary, and they
+    are finite and counted. The kernel recorded no panic, no out-of-memory action and no guard termination over
+    the seven runs. Below <math><mi>s</mi><mo>=</mo><mn>0.5</mn></math> the frames are asset loading, far from the boundary, and that stratum alone carries a heavy
+    tail (<math><msub><mi>q</mi><mn>0.99</mn></msub><mo>=</mo><mn>8.0</mn></math>): the long frames sit where the fast domain is empty, not where it is full.
+    <a href="../evidence/#saturation">Evidence E3</a>.</p>
+  </div>
+
+  <div class="prop">
+    <div class="h">Observation 5 <span>· joint saturation · <span class="chip measured">measured</span></span></div>
+    <p>On the 31,222 frames with <math><mi>s</mi><mo>≥</mo><mn>0.95</mn></math> and accelerator duty <math><mo>≥</mo><mn>0.90</mn></math> simultaneously:
+    <math><msub><mi>q</mi><mn>0.5</mn></msub><mo>=</mo><mn>1.32</mn></math>, <math><msub><mi>q</mi><mn>0.99</mn></msub><mo>=</mo><mn>4.98</mn></math>, and
+    <math><mi>𝔼</mi><mo>[</mo><msub><mtext>load</mtext><mtext>host</mtext></msub><mo>]</mo><mo>=</mo><mn>0.20</mn></math>. The frame period then follows the accelerator's
+    compute duty, not the memory boundary: Observation 2 at the boundary of the fast domain.</p>
+  </div>
+
+  <!-- ===================================================================== -->
+  <h2 id="s6"><span class="no">§6</span>Dimensional reduction: the law without prescriptions</h2>
+  <p>Corollary 1 is the queueing face of a more general fact. Call a <i>prescription</i> any constant of the control law that carries a
+  physical dimension and is not read from the state: a byte count, a page count, a size at which the law was tuned.
+  Programming a kernel in the usual sense is writing prescriptions; removing them is the design principle here.</p>
+
+  <div class="prop model">
+    <div class="h">Proposition 4 <span>· Π-reduction (Buckingham, 1914) · <span class="chip model">model</span></span></div>
+    <p>Let a decision of the control law be a relation <math><mi>f</mi><mo>(</mo><msub><mi>x</mi><mn>1</mn></msub><mo>,</mo><mo>…</mo><mo>,</mo><msub><mi>x</mi><mi>n</mi></msub><mo>)</mo><mo>=</mo><mn>0</mn></math>
+    among <math><mi>n</mi></math> state quantities spanning <math><mi>r</mi></math> independent dimensions, with no prescription. Then it is equivalent to</p>
+    <div class="eq">
+      <math display="block"><mi>Φ</mi><mo>(</mo><msub><mi>Π</mi><mn>1</mn></msub><mo>,</mo><mo>…</mo><mo>,</mo><msub><mi>Π</mi><mrow><mi>n</mi><mo>−</mo><mi>r</mi></mrow></msub><mo>)</mo><mo>=</mo><mn>0</mn><mo>,</mo>
+        <mspace width="1.5em"/><mi>Π</mi><mo>=</mo><mrow><mo>(</mo><mfrac><mi>σ</mi><msub><mi>C</mi><mi>𝒱</mi></msub></mfrac><mo>,</mo>
+        <mfrac><msub><mi>ℓ</mi><mn>1</mn></msub><msub><mi>C</mi><mi>ℛ</mi></msub></mfrac><mo>,</mo><mo>…</mo><mo>,</mo><mfrac><msub><mi>ℓ</mi><mi>k</mi></msub><msub><mi>C</mi><mi>ℛ</mi></msub></mfrac><mo>,</mo>
+        <mfrac><mi>ρ</mi><mi>k</mi></mfrac><mo>,</mo><mi>P</mi><mo>)</mo></mrow><mo>.</mo></math>
+      <span class="tag">(6.1)</span>
+    </div>
+    <p class="proof">The dimensional matrix of <math><mo>(</mo><msub><mi>x</mi><mi>i</mi></msub><mo>)</mo></math> has rank <math><mi>r</mi></math>; a relation
+    with no dimensional constant is invariant under the scaling group of the units, and its invariants are generated by
+    <math><mi>n</mi><mo>−</mo><mi>r</mi></math> monomials of dimension one.</p>
+  </div>
+
+  <div class="prop model">
+    <div class="h">Corollary 3 <span>· dilation equivariance · <span class="chip model">model</span></span></div>
+    <p>Let the group <math><msub><mi>ℝ</mi><mrow><mo>&gt;</mo><mn>0</mn></mrow></msub></math> act by
+    <math><mo>(</mo><msub><mi>C</mi><mi>𝒱</mi></msub><mo>,</mo><msub><mi>C</mi><mi>ℛ</mi></msub><mo>,</mo><mi>σ</mi><mo>,</mo><msub><mi>ℓ</mi><mi>i</mi></msub><mo>)</mo><mo>↦</mo><mi>c</mi><mo>·</mo><mo>(</mo><msub><mi>C</mi><mi>𝒱</mi></msub><mo>,</mo><msub><mi>C</mi><mi>ℛ</mi></msub><mo>,</mo><mi>σ</mi><mo>,</mo><msub><mi>ℓ</mi><mi>i</mi></msub><mo>)</mo></math>.
+    Every <math><mi>Π</mi></math> in (6.1) is invariant, hence so is every decision: the trajectory of the law on one
+    address space is, up to dilation, its trajectory on any other. A prescription is exactly what breaks this symmetry,
+    and it fixes the one scale at which the law was tuned: the resonance where a tuned system fails.</p>
+  </div>
+
+  <div class="prop">
+    <div class="h">Realization <span>· <span class="chip design">deployed</span></span></div>
+    <p>In the deployed kernel every bound with the dimension of memory is a ratio to a capacity read from the running system:
+    the guard acts at a floor of 3 % of capacity and selects only a process holding ≥ 15 % of it; the transport granule and both
+    capacities are read at load time. The residual prescriptions are of time only (the guard's confirmation and cool-down
+    windows), so Proposition 4 removes the dependence on size completely and leaves the dependence on time to (3.2).</p>
+  </div>
+
+  <!-- ===================================================================== -->
+  <h2 id="s7"><span class="no">§7</span>Conclusions</h2>
   <ol>
-    <li><b>Scale is orthogonal to the method.</b> Flow conservation (1.2) and the bound (2.2) contain no size;
+    <li><b>Scale is orthogonal to the method.</b> Flow conservation (1.2), the bound (2.2) and the reduced law (6.1) contain no size;
       they hold unchanged from a single board to a data center.</li>
-    <li><b>No fixed constants.</b> Feedback read from the state replaces rigid timing constants and removes the
-      single points of resonance where a tuned system fails.</li>
-    <li><b>Kernel modules can carry the algebra.</b> Low-level optimization decouples from the rigidity of
-      conventional software and approaches the physical limit of the silicon it runs on.</li>
+    <li><b>The balance is exact.</b> The transport operator closes its ledger to the unit of mass, and its only residual is the set
+      of admissions the fast domain refused (4.2).</li>
+    <li><b>The boundary is not a wall.</b> Measured at <math><mi>s</mi><mo>≥</mo><mn>0.98</mn></math>, the frame-period quantiles stay finite and the
+      median does not move (5.2): the discontinuity (1.1) does not occur.</li>
+    <li><b>No prescriptions.</b> Feedback read from the state replaces constants of size, and with them the single points of resonance
+      where a tuned system fails (Corollary 3).</li>
+    <li><b>Kernel modules can carry the algebra.</b> Low-level optimization decouples from the rigidity of conventional software and
+      approaches the physical limit of the silicon it runs on.</li>
   </ol>
 
   <h3>Status of each statement</h3>
@@ -220,6 +352,11 @@
         <tr><td>p50 +10.5 % to +13.8 %</td><td>same campaigns; the declared price of the tail</td><td><span class="chip measured">measured</span></td></tr>
         <tr><td>Observation 1, fast domain ≥ 99.75 %</td><td>sustained, no panic or reset</td><td><span class="chip measured">measured</span></td></tr>
         <tr><td>Observation 2, host 0.19–0.21</td><td>accelerator at 96–100 % duty</td><td><span class="chip measured">measured</span></td></tr>
+        <tr><td>Proposition 3, residual = rejected set</td><td>alternating dispatch, closed ledger</td><td><span class="chip model">model</span></td></tr>
+        <tr><td>Observation 3, exact closure</td><td>1,260 requests, 4 rejected, Δ = 4 granules, <a href="../evidence/#ledger">E4</a></td><td><span class="chip measured">measured</span></td></tr>
+        <tr><td>Observation 4, bounded at the boundary</td><td>425,860 frames, 7 runs, single arm, <a href="../evidence/#saturation">E3</a></td><td><span class="chip measured">measured</span></td></tr>
+        <tr><td>Observation 5, joint saturation</td><td>31,222 frames, <math><mi>s</mi><mo>≥</mo><mn>0.95</mn></math> and duty ≥ 0.90</td><td><span class="chip measured">measured</span></td></tr>
+        <tr><td>Proposition 4, Corollary 3, Π-reduction</td><td>Buckingham Π-theorem; no size prescription in the deployed law</td><td><span class="chip model">model</span></td></tr>
         <tr><td>Robertson–Schrödinger on transport : position</td><td>Physlib <a href="https://github.com/leanprover-community/physlib/pull/1723">#1723</a>, <a href="https://github.com/leanprover-community/physlib/pull/1725">#1725</a>; <a href="https://naype888-cloud.github.io/BACQM-NRS3/">BACQM-NRS³</a></td><td><span class="chip lean">Lean 4</span></td></tr>
       </tbody>
     </table>
@@ -237,6 +374,6 @@
   </nav>
   <footer>© 2026 BACQM Systems Research Group · kernel source private · mathematics and data open</footer>
 </main>
-<script src="../shared/js/bound.js?v=20261023" defer></script>
+<script src="../shared/js/bound.js?v=20261024" defer></script>
 </body>
 </html>
