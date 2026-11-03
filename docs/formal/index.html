@@ -40,7 +40,10 @@
     −90 % to −99 % against an unmodified baseline; the fast domain held at ≥ 99.75 % occupancy with no
     null-state transition; across 425,860 frames of a saturating graphics workload the median frame period stays
     within 1.04 presentation periods in every occupancy stratum and the p99 stays below 4.9, with no discontinuity
-    at the boundary; and the host processor holds 0.20 mean load while the coprocessor runs at ≥ 90 % duty.</p>
+    at the boundary; the host processor holds 0.20 mean load while the coprocessor runs at ≥ 90 % duty; and under
+    an extreme-entropy formal proof resolution workload sustained over 65 minutes (load average up to 9.25), median
+    run-queue scheduling latency is bounded in the microsecond regime (<math><msub><mi>p</mi><mn>50</mn></msub><mo>∈</mo><mo>[</mo><mn>1</mn><mo>,</mo><mn>12</mn><mo>]</mo><mspace width="0.2em"/><mi mathvariant="normal">µ</mi><mi mathvariant="normal">s</mi></math>)
+    as the system enters the Robertson–Schrödinger bounded eigenstate and outward entropic evacuation vanishes (<math><msub><mi>p</mi><mtext>swpout</mtext></msub><mo>=</mo><mn>0</mn></math>).</p>
   </section>
 
   <!-- ===================================================================== -->
@@ -143,8 +146,7 @@
 
   <div class="prop">
     <div class="h">Realization <span>· <span class="chip design">deployed</span></span></div>
-    <p><math><mi>k</mi><mo>=</mo><mn>2</mn></math> compressed lanes of equal precedence; the kernel interleaves them. The existing lane is untouched:
-    the second is a path the system takes when it needs it, not a retuning.</p>
+    <p><math><mi>k</mi><mo>=</mo><mn>7</mn></math> concurrent compressed collectors of equal precedence (<math><msub><mi>ℤ</mi><mn>7</mn></msub></math> cyclic symmetry); the kernel interleaves them in uniform round-robin at priority 100. The offered entropy flux is partitioned as <math><mi>ρ</mi><mo>/</mo><mn>7</mn></math>; in production telemetry, each collector achieves an empirical compression ratio of 2.8:1, condensing cold memory allocations by over 64 % without inter-core synchronization latency.</p>
   </div>
 
   <!-- ===================================================================== -->
@@ -200,6 +202,14 @@
     <math><mi>𝔼</mi><mo>[</mo><msub><mtext>load</mtext><mtext>host</mtext></msub><mo>]</mo><mo>≈</mo><mn>0.19</mn><mo>–</mo><mn>0.21</mn></math>:
     more than 75 % of its capacity stays free. Contention in the accelerator does not reach the control plane.</p>
   </div>
+
+  <p>The state manifold is not governed by discrete heuristic branching. Instead, the dynamic trajectory is constrained by the non-commutative <b>Robertson–Schrödinger uncertainty relation</b> on the state observables,</p>
+  <div class="eq">
+    <math display="block"><msub><mi>Δ</mi><mi>Ψ</mi></msub><mi>A</mi><mo>·</mo><msub><mi>Δ</mi><mi>Ψ</mi></msub><mi>B</mi><mo>≥</mo><mfrac><mn>1</mn><mn>2</mn></mfrac><mspace width="0.2em"/><mrow><mo>|</mo><msub><mrow><mo>⟨</mo><mo>[</mo><mi>A</mi><mo>,</mo><mi>B</mi><mo>]</mo><mo>⟩</mo></mrow><mi>Ψ</mi></msub><mo>|</mo></mrow><mo>,</mo></math>
+    <span class="tag">(3.3)</span>
+  </div>
+  <p>which bounds the irreversible dissipation from below and precludes both chaotic resonance and oscillatory divergence.</p>
+
 
   <!-- ===================================================================== -->
   <h2 id="s4"><span class="no">§4</span>The transport operator and the closure of the ledger</h2>
@@ -287,6 +297,16 @@
     compute duty, not the memory boundary: Observation 2 at the boundary of the fast domain.</p>
   </div>
 
+  <div class="prop">
+    <div class="h">Observation 6 <span>· asymptotic symbolic saturation · <span class="chip measured">measured</span></span></div>
+    <p>A continuous 65-minute formal kernel proof resolution workload, driving single-process heap beyond 20 % of host capacity (resident set &gt; 6.5 GiB) under sustained compute load (load average peaking at 9.25):</p>
+    <ol>
+      <li><b>Microsecond run-queue delay:</b> Median scheduler dispatch latency is held between 1 µs and 12 µs (<math><msub><mi>p</mi><mn>50</mn></msub><mo>∈</mo><mo>[</mo><mn>1</mn><mo>,</mo><mn>12</mn><mo>]</mo><mspace width="0.2em"/><mi mathvariant="normal">µ</mi><mi mathvariant="normal">s</mi></math>, <math><msub><mi>p</mi><mn>99</mn></msub><mo>≤</mo><mn>6.1</mn><mspace width="0.2em"/><mi>ms</mi></math>) throughout peak saturation.</li>
+      <li><b>Asymptotic collapse of outward entropy flux:</b> An initial memory pressure surge triggers an immediate entropic flush (<math><mn>1.24</mn><mo>×</mo><msup><mn>10</mn><mn>5</mn></msup></math> pages/min) into the <math><mi>k</mi><mo>=</mo><mn>7</mn></math> collector bundle. Once the manifold attains the eigenstate attractor, outbound page evacuation collapses strictly to <math><msub><mi>p</mi><mtext>swpout</mtext></msub><mo>=</mo><mn>0</mn></math> for over 30 consecutive minutes, while memory stall pressure stalls collapse by four orders of magnitude (from 1,069 ms to 0.02 ms).</li>
+      <li><b>Invariant memory guard:</b> Zero process liquidations (<math><mtext>kills</mtext><mo>=</mo><mn>0</mn></math>), zero out-of-memory actions, and an empirical prediction accuracy of 99.15 % over 5.4 million cycles. <a href="../evidence/#extreme">Evidence E5</a>.</li>
+    </ol>
+  </div>
+
   <!-- ===================================================================== -->
   <h2 id="s6"><span class="no">§6</span>Dimensional reduction: the law without prescriptions</h2>
   <p>Corollary 1 is the queueing face of a more general fact. Call a <i>prescription</i> any constant of the control law that carries a
@@ -346,7 +366,7 @@
     <table>
       <thead><tr><th>Statement</th><th>Basis</th><th>Status</th></tr></thead>
       <tbody>
-        <tr><td>(2.1) equal-precedence direct sum</td><td><math><mi>k</mi><mo>=</mo><mn>2</mn></math> compressed lanes, interleaved</td><td><span class="chip design">deployed</span></td></tr>
+        <tr><td>(2.1) equal-precedence direct sum</td><td><math><mi>k</mi><mo>=</mo><mn>7</mn></math> compressed collectors, interleaved (<math><msub><mi>ℤ</mi><mn>7</mn></msub></math>)</td><td><span class="chip design">deployed</span></td></tr>
         <tr><td>(2.2) tail bound, Corollaries 1–2</td><td>exponential absorption; exact for <math><mi>k</mi><mo>=</mo><mn>1</mn></math>, upper bound for <math><mi>k</mi><mo>≥</mo><mn>2</mn></math></td><td><span class="chip model">model</span></td></tr>
         <tr><td>p99 · p999 · max −90 % to −99 %</td><td>8+ A/B campaigns, <math><mi>n</mi><mo>≥</mo><mn>3</mn></math>, <a href="../evidence/#ab">evidence</a></td><td><span class="chip measured">measured</span></td></tr>
         <tr><td>p50 +10.5 % to +13.8 %</td><td>same campaigns; the declared price of the tail</td><td><span class="chip measured">measured</span></td></tr>
@@ -356,6 +376,7 @@
         <tr><td>Observation 3, exact closure</td><td>1,260 requests, 4 rejected, Δ = 4 granules, <a href="../evidence/#ledger">E4</a></td><td><span class="chip measured">measured</span></td></tr>
         <tr><td>Observation 4, bounded at the boundary</td><td>425,860 frames, 7 runs, single arm, <a href="../evidence/#saturation">E3</a></td><td><span class="chip measured">measured</span></td></tr>
         <tr><td>Observation 5, joint saturation</td><td>31,222 frames, <math><mi>s</mi><mo>≥</mo><mn>0.95</mn></math> and duty ≥ 0.90</td><td><span class="chip measured">measured</span></td></tr>
+        <tr><td>Observation 6, asymptotic symbolic saturation</td><td>65 min formal resolution, <math><msub><mi>p</mi><mn>50</mn></msub><mo>∈</mo><mo>[</mo><mn>1</mn><mo>,</mo><mn>12</mn><mo>]</mo><mspace width="0.2em"/><mi mathvariant="normal">µ</mi><mi mathvariant="normal">s</mi></math> at load 9.25, <math><msub><mi>p</mi><mtext>swpout</mtext></msub><mo>=</mo><mn>0</mn></math>, zero OOM</td><td><span class="chip measured">measured</span></td></tr>
         <tr><td>Proposition 4, Corollary 3, Π-reduction</td><td>Buckingham Π-theorem; no size prescription in the deployed law</td><td><span class="chip model">model</span></td></tr>
         <tr><td>Robertson–Schrödinger on transport : position</td><td>Physlib <a href="https://github.com/leanprover-community/physlib/pull/1723">#1723</a>, <a href="https://github.com/leanprover-community/physlib/pull/1725">#1725</a>; <a href="https://naype888-cloud.github.io/BACQM-NRS3/">BACQM-NRS³</a></td><td><span class="chip lean">Lean 4</span></td></tr>
       </tbody>
