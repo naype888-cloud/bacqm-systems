@@ -35,7 +35,7 @@
 > Les politiques déterministes d’allocation traitent la mémoire comme un conteneur statique : lorsque la demande instantanée approche la frontière physique, la latence diverge ou l’espace de processus est terminé. Dans BACQM Systems, la mémoire est formulée comme un opérateur de densité de phase sous conservation de flux, régie par un domaine élastique scindé en k = 7 collecteurs concurrents de même préséance sous symétrie cyclique ℤ₇, un registre de transport bidirectionnel exactement clos, et une loi de commande de noyau sans prescriptions dimensionnelles.
 >
 > <div align="center">
-> <img src="assets/plaque_systems_maitresse.png" alt="Plaque maîtresse : dynamique de mémoire invariante d’échelle, topologie multivoie, registre exact et saturation asymptotique" width="860">
+> <picture><source media="(prefers-color-scheme: dark)" srcset="assets/oscuro/plaque_systems_maitresse.png"><img src="assets/claro/plaque_systems_maitresse.png" alt="Plaque maîtresse : dynamique de mémoire invariante d’échelle, topologie multivoie, registre exact et saturation asymptotique" width="860"></picture>
 > </div>
 >
 > **1 · Somme directe à préséance égale.** Le domaine élastique est partitionné en k collecteurs concurrents ℛ = ⊕ᵢ ℛᵢ avec π(ℛᵢ) = π(ℛⱼ), entrelacant l’acheminement des pages selon un tour cyclique (symétrie ℤ_k) sans goulot d’étranglement sériel.
@@ -62,14 +62,14 @@
 ## 📐 Chaîne déductive en six étapes
 
 <div align="center">
-<img src="assets/plaque_systems_pipeline.png" alt="Les six étapes déductives : conservation de flux, topologie multivoie, noyau homéostatique, registre exact, saturation sans divergence, réduction dimensionnelle" width="860">
+<picture><source media="(prefers-color-scheme: dark)" srcset="assets/oscuro/plaque_systems_pipeline.png"><img src="assets/claro/plaque_systems_pipeline.png" alt="Les six étapes déductives : conservation de flux, topologie multivoie, noyau homéostatique, registre exact, saturation sans divergence, réduction dimensionnelle" width="860"></picture>
 </div>
 
 ### Étape 1 : Cadre algébrique et conservation de flux
 
 > **Proposition 1.1 (Bilan de flux en densité de phase).** Soit 𝒱 le domaine rapide de capacité C_𝒱 et ℛ le domaine élastique. Au lieu d’une projection stationnaire Φ : 𝒮 → 𝒱 présentant une discontinuité dès ‖σ‖ → C_𝒱, la mémoire obéit au bilan de flux σ(t+1) = σ(t) + a(t) − ∑ eᵢ(t) + ∑ rᵢ(t). Le noyau déployé soutient ‖σ‖ / C_𝒱 ≥ 0,9975 sans état nul ni réinitialisation de contrôleur.
 
-<div align="center"><img src="assets/plaque_systems_stage1.png" alt="Étape 1 : condition aux limites des allocateurs déterministes, conservation de flux et observation de frontière du domaine rapide" width="860"></div>
+<div align="center"><picture><source media="(prefers-color-scheme: dark)" srcset="assets/oscuro/plaque_systems_stage1.png"><img src="assets/claro/plaque_systems_stage1.png" alt="Étape 1 : condition aux limites des allocateurs déterministes, conservation de flux et observation de frontière du domaine rapide" width="860"></picture></div>
 
 *Base formelle :* `docs/formal/#s1`, Équation (1.2), Observation 1. L’algèbre ne nomme aucune taille ; elle est identique pour un espace mémoire local ou une grappe complète.
 
@@ -79,7 +79,7 @@
 
 > **Proposition 2.1 (Somme directe à préséance égale et borne de queue).** Scinder le domaine élastique en ℛ = ⊕ᵢ₌₁ᵏ ℛᵢ avec préséance égale π(ℛᵢ) = π(ℛⱼ) confère la symétrie cyclique ℤ_k. L’ordonnancement entrelacé produit une charge ρᵢ = ρ/k par collecteur et un quantile de sojourn exponentiel t_q · μ = −ln(1−q) / (1 − ρ/k). Pour ρ ≥ k, l’arriéré croît indéfiniment ; le faisceau minimal stabilisateur est k* = ⌊ρ⌋ + 1.
 
-<div align="center"><img src="assets/plaque_systems_stage2.png" alt="Étape 2 : somme directe à préséance égale, borne de queue du temps de séjour, corollaire d’une voie supplémentaire et réalisation k=7" width="860"></div>
+<div align="center"><picture><source media="(prefers-color-scheme: dark)" srcset="assets/oscuro/plaque_systems_stage2.png"><img src="assets/claro/plaque_systems_stage2.png" alt="Étape 2 : somme directe à préséance égale, borne de queue du temps de séjour, corollaire d’une voie supplémentaire et réalisation k=7" width="860"></picture></div>
 
 *Base formelle :* `docs/formal/#s2`, Équation (2.1), Proposition 1, Proposition 2, Corollaires 1–2.  
 *Déploiement :* k = 7 collecteurs concurrents compressés sous symétrie cyclique ℤ₇ à priorité 100, ratio de compression 2,88:1.
@@ -90,7 +90,7 @@
 
 > **Proposition 3.1 (Commande bornée par l’incertitude et désaccouplement asymétrique).** La variété dynamique Ψ(t) = (σ, ℓ₁,…,ℓ_k, P, θ, u)(t) exécute la commande en gradient u(t+1) = u(t) + η(t) ∇P(t) avec un gain η lu sur l’état. La dissipation est intégrée en boucle fermée. La trajectoire d’état est bornée inférieurement par l’incertitude non commutative de Robertson–Schrödinger Δ_Ψ A · Δ_Ψ B ≥ ½ |⟨[A, B]⟩_Ψ|, interdisant toute résonance et découplant la charge hôte (moyenne 0,20) du régime de calcul coprocesseur (≥90 %).
 
-<div align="center"><img src="assets/plaque_systems_stage3.png" alt="Étape 3 : nuplet d’état et équations maîtresses, borne d’incertitude de Robertson-Schrödinger et observation de désaccouplement asymétrique" width="860"></div>
+<div align="center"><picture><source media="(prefers-color-scheme: dark)" srcset="assets/oscuro/plaque_systems_stage3.png"><img src="assets/claro/plaque_systems_stage3.png" alt="Étape 3 : nuplet d’état et équations maîtresses, borne d’incertitude de Robertson-Schrödinger et observation de désaccouplement asymétrique" width="860"></picture></div>
 
 *Base formelle :* `docs/formal/#s3`, Équations (3.1)–(3.3), Observation 2.  
 *Fondations mathématiques en Lean 4 :* Physlib #1723, #1725.
@@ -101,7 +101,7 @@
 
 > **Proposition 4.1 (Registre de transport exact et identité du résidu).** L’opérateur bidirectionnel 𝒯 : 𝒱 ⇄ ℛ alterne de direction sous symétrie ℤ₂ sur des granules de masse fixe. Pour tout registre clos R_• = N_• + F_•, le transport net Δ ≔ N↓ − N↑ compense exactement les admissions refusées à la frontière F↑ − F↓. Toute dérive de σ au travers de 𝒯 correspond granule par granule aux requêtes rejetées.
 
-<div align="center"><img src="assets/plaque_systems_stage4.png" alt="Étape 4 : opérateur de transport bidirectionnel, identité du résidu et observation de clôture exacte sur 1260 requêtes" width="860"></div>
+<div align="center"><picture><source media="(prefers-color-scheme: dark)" srcset="assets/oscuro/plaque_systems_stage4.png"><img src="assets/claro/plaque_systems_stage4.png" alt="Étape 4 : opérateur de transport bidirectionnel, identité du résidu et observation de clôture exacte sur 1260 requêtes" width="860"></picture></div>
 
 *Base formelle :* `docs/formal/#s4`, Équations (4.1)–(4.2), Définition 1, Proposition 3, Observation 3. Compteurs réels : 1 260 requêtes, 1 256 menées à terme, 4 rejets (frontière de 𝒱), Δ = 4 granules, 0,32 % de déséquilibre net.
 
@@ -111,7 +111,7 @@
 
 > **Proposition 5.1 (Latence bornée à la frontière et effondrement asymptotique).** Les quantiles conditionnels q_p(s) = Q_p[τ_f | s ∈ I_j] / T₀ restent bornés à 1,01–1,04 T₀ sur 425 860 trames jusqu’à s ≥ 0,98, où p99 est mesuré à 3,55 T₀ sans divergence à la frontière. Lors d’une preuve formelle intensive (tas >6,5 Gio, charge 9,25), le temps d’ordonnancement tient à p50 ∈ [1, 12] µs, le flux de swap s’annule (p_swpout = 0 pendant >30 min), et les interruptions restent nulles.
 
-<div align="center"><img src="assets/plaque_systems_stage5.png" alt="Étape 5 : quantiles conditionnels de période de trame par strate et observation de saturation symbolique asymptotique soutenue" width="860"></div>
+<div align="center"><picture><source media="(prefers-color-scheme: dark)" srcset="assets/oscuro/plaque_systems_stage5.png"><img src="assets/claro/plaque_systems_stage5.png" alt="Étape 5 : quantiles conditionnels de période de trame par strate et observation de saturation symbolique asymptotique soutenue" width="860"></picture></div>
 
 *Base formelle :* `docs/formal/#s5`, Équations (5.1)–(5.2), Observations 4, 5, 6 ; Preuves E3, E5.
 
@@ -121,7 +121,7 @@
 
 > **Proposition 6.1 (Réduction Π de Buckingham et absence de prescriptions).** Retirer toute constante dimensionnelle non mesurée sur l’état réduit la loi de commande aux seuls invariants sans dimension Φ(σ/C_𝒱, ℓ₁/C_ℛ,…,ℓ_k/C_ℛ, ρ/k, P) = 0. La dynamique est équivariante sous dilatation des capacités (C_𝒱, C_ℛ, σ, ℓᵢ) ↦ c · (C_𝒱, C_ℛ, σ, ℓᵢ), éliminant les résonances où échouent les systèmes pré-calibrés.
 
-<div align="center"><img src="assets/plaque_systems_stage6.png" alt="Étape 6 : réduction Pi de Buckingham, corollaire d’équivariance sous dilatation et réalisation continue en virgule fixe Q12" width="860"></div>
+<div align="center"><picture><source media="(prefers-color-scheme: dark)" srcset="assets/oscuro/plaque_systems_stage6.png"><img src="assets/claro/plaque_systems_stage6.png" alt="Étape 6 : réduction Pi de Buckingham, corollaire d’équivariance sous dilatation et réalisation continue en virgule fixe Q12" width="860"></picture></div>
 
 *Base formelle :* `docs/formal/#s6`, Équation (6.1), Proposition 4, Corollaire 3. Déploiement : variété d’actionnement VM à virgule fixe ℚ₁₂ sans constante entière.
 
