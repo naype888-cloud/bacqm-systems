@@ -202,7 +202,7 @@ Toutes les séries vivent dans [`data/`](data/) réduites en ratios sans dimensi
 
 ---
 
-## 🔒 Accès au Substrat Bare-Metal : Pruebas, Demos y Programas Piloto
+## 🔒 Accès au Substrat Bare-Metal : Banc d'Essai, Démonstrations & Programmes Pilotes
 
 > ### ⚠️ Protocole d'évaluation sur matériel dédié & Confidentialité stricte
 > 
