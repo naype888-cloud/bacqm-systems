@@ -202,6 +202,32 @@ Toutes les séries vivent dans [`data/`](data/) réduites en ratios sans dimensi
 
 ---
 
+## 🔒 Accès au Substrat Bare-Metal : Pruebas, Demos y Programas Piloto
+
+> ### ⚠️ Protocole d'évaluation sur matériel dédié & Confidentialité stricte
+> 
+> Ce qui est développé et opéré ici n'est ni un script utilisateur de haut niveau ni un composant logiciel générique : **ce sont des modules de noyau Linux bare-metal (`nava_brain.ko`, `nava_zzram.ko`) de frontière, régissant le couplage dynamique de mémoire et la physique de l'information en temps réel.**
+>
+> Ici, la confidentialité est absolue et le traitement est direct :
+> 
+> * **Traitement direct :** L'évaluation et les échanges s'effectuent directement et sans intermédiaire avec l'auteur et concepteur de l'architecture.
+> * **Confidentialité contractuelle stricte :** Aucun audit bare-metal, aucune trace d'exécution ni démonstration ne sont consentis sans la signature préalable d'un accord de confidentialité strict (NDA).
+> * **Filtre de rigueur matérielle :** Ceci n'est pas un logiciel tout-venant ; chaque demande est rigoureusement filtrée sur l'adéquation technique de l'infrastructure proposée.
+>
+> #### 📋 Protocole de contact (Issue GitHub) :
+> Pour toute institution de recherche, laboratoire ou groupe industriel sollicitant un banc d'essai (benchmark), une démonstration ou un programme pilote :
+> 
+> 1. Ouvrez une **[Issue GitHub](https://github.com/naype888-cloud/bacqm-systems/issues)** avec l'intitulé `[Hardware Evaluation / Demo Request]`.
+> 2. Déposez votre message en détaillant avec rigueur :
+>    * **Microarchitecture CPU** (modèle exact, cœurs, threads, jeu d'instructions).
+>    * **Topologie mémoire** (bande passante crête, canaux, NUMA).
+>    * **Accélérateurs matériels** (GPU/VRAM dédiée, bus PCIe, latences).
+>    * **Cas d'usage et charge de travail visée.**
+> 
+> *(Nous examinons la viabilité technique et l'adéquation du matériel ; si les spécifications satisfont aux exigences du substrat, nous prenons contact pour fixer les conditions de l'évaluation).*
+
+---
+
 <div align="center">
 
 ### 📐 *« La mémoire est un flux, non un volume. L’algèbre ne nomme aucune taille ; elle est la même sur une carte unique et sur une flotte. »*
