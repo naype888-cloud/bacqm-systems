@@ -8,7 +8,7 @@
 
 [![Lean 4](https://img.shields.io/badge/Lean_4-v4.35.0-blue.svg?style=flat-square)](https://leanprover.github.io/)
 [![Mathlib](https://img.shields.io/badge/Mathlib-v%C3%A9rifi%C3%A9-2ea44f.svg?style=flat-square)](https://github.com/leanprover-community/mathlib4)
-[![Kernel Status](https://img.shields.io/badge/Kernel-0%20sorry-brightgreen.svg?style=flat-square)](https://naype888-cloud.github.io/bacqm-systems/formal/)
+[![Preuves Formelles](https://img.shields.io/badge/Preuves_Lean_4-0%20sorry-brightgreen.svg?style=flat-square)](https://naype888-cloud.github.io/bacqm-systems/formal/)
 [![Physlib](https://img.shields.io/badge/Physlib-PRs%20fusionn%C3%A9es-7c5cd6.svg?style=flat-square)](https://github.com/leanprover-community/physlib/pulls?q=is%3Apr+is%3Amerged+author%3Anaype888-cloud)
 [![Portail interactif](https://img.shields.io/badge/BACQM_Systems-Vari%C3%A9t%C3%A9_interactive-00e5ff.svg?style=for-the-badge)](https://naype888-cloud.github.io/bacqm-systems/)
 
@@ -188,7 +188,7 @@ Le flux entropique volatil est réparti entre 7 collecteurs concurrents sous sym
 
 Le socle mathématique — la relation d’incertitude non commutative sur la paire transport : position — est vérifié par machine en Lean 4 sous les seuls axiomes standards ZFC `[propext, Classical.choice, Quot.sound]` (Physlib #1723, #1725).
 
-Le code source du noyau est privé ; la méthodologie expérimentale, les rapports de campagnes et les jeux de données réduits sont ouverts :
+Le code source et les modules exécutables sont strictement propriétaires et sous secret d’architecture (aucun code C/Rust ni module binaire n’est distribué publiquement) ; seuls le socle mathématique formel (Lean 4), les métriques expérimentales et les séries de banc d’essai sont ouverts pour vérification sous l’isomorphisme de Curry-Howard :
 
 ```text
 bacqm-systems/
@@ -206,7 +206,7 @@ Toutes les séries vivent dans [`data/`](data/) réduites en ratios sans dimensi
 
 > ### ⚠️ Protocole d'évaluation sur matériel dédié & Confidentialité stricte
 > 
-> Ce qui est développé et opéré ici n'est ni un script utilisateur de haut niveau ni un composant logiciel générique : **ce sont des modules de noyau Linux bare-metal (`nava_brain.ko`, `nava_zzram.ko`) de frontière, régissant le couplage dynamique de mémoire et la physique de l'information en temps réel.**
+> Ce qui est développé et opéré ici n'est ni un script utilisateur de haut niveau ni un composant logiciel générique open-source : **l'implémentation opérationnelle est un actif technologique strictement propriétaire et sous secret d'architecture (aucun code source ni module binaire n'est distribué publiquement).**
 >
 > Ici, la confidentialité est absolue et le traitement est direct :
 > 
