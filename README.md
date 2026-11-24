@@ -1,3 +1,5 @@
+<div lang="fr">
+
 <div align="center">
 
 # BACQM Systems · Dynamique de mémoire invariante d’échelle
@@ -15,7 +17,10 @@
 <br>
 
 <a href="https://naype888-cloud.github.io/bacqm-systems/">
-  <img src="docs/media/banner.svg" alt="BACQM Systems — la mémoire comme flux et non comme volume. Ouvrir la variété en ligne" width="860">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="docs/media/banner_dark.svg">
+    <img src="docs/media/banner_light.svg" alt="BACQM Systems — la mémoire comme flux et non comme volume. Ouvrir la variété en ligne" width="860">
+  </picture>
 </a>
 
 <p>
@@ -233,5 +238,8 @@ Toutes les séries vivent dans [`data/`](data/) réduites en ratios sans dimensi
 ### 📐 *« La mémoire est un flux, non un volume. L’algèbre ne nomme aucune taille ; elle est la même sur une carte unique et sur une flotte. »*
 
 **Eduardo Nava Hernández** · [naype888-cloud](https://github.com/naype888-cloud)
+
+</div>
+
 
 </div>
