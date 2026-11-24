@@ -56,7 +56,7 @@
 ## ⚡ Résumé formel
 
 * **Flux de densité de phase.** L’espace d’états couple un domaine de transit rapide 𝒱 borné par C_𝒱 à un domaine élastique compressé ℛ (C_ℛ ≫ C_𝒱). La conservation de flux σ(t+1) = σ(t) + a(t) − ∑ eᵢ(t) + ∑ rᵢ(t) remplace les limites de conteneur statique. L’occupation du domaine rapide est soutenue à ‖σ‖ / C_𝒱 ≥ 0,9975 sans transition vers l’état nul, ni panique ni réinitialisation du contrôleur (Observation 1).
-* **Absorption entropique multivoie.** La partition ℛ = ⊕ᵢ₌₁ᵏ ℛᵢ avec préséance égale de routage π(ℛᵢ) = π(ℛⱼ) répartit l’évacuation sous forme de tenseur cyclique. Les arrivées entrelacées Erlang-k fournissent la borne quantile t_q · μ = −ln(1−q) / (1 − ρ/k) (Propositions 1, 2). Le faisceau minimal empêchant l’accumulation non bornée est k* = ⌊ρ⌋ + 1 (Corollaire 2). En production : k = 7 collecteurs concurrents sous symétrie cyclique ℤ₇ à priorité 100, atteignant un ratio de compression empirique de 2,88:1.
+* **Absorption entropique multivoie.** La partition ℛ = ⊕ᵢ₌₁ᵏ ℛᵢ avec préséance égale de routage π(ℛᵢ) = π(ℛⱼ) répartit l’évacuation sous forme de tenseur cyclique. Les arrivées entrelacées Erlang-k fournissent la borne quantile t_q · μ = −ln(1−q) / (1 − ρ/k) (Propositions 1, 2). Le faisceau minimal empêchant l’accumulation non bornée est k* = ⌊ρ⌋ + 1 (Corollaire 2). En production : k = 7 collecteurs concurrents sous symétrie cyclique ℤ₇ à priorité 100, atteignant un facteur de compression empirique de 2,88:1.
 * **Noyau homéostatique & incertitude non commutative.** La variété dynamique Ψ(t) = (σ, ℓ₁,…,ℓ_k, P, θ, u)(t) actionne la commande par gradient u(t+1) = u(t) + η(t) ∇P(t) avec un gain lu sur l’état courant. La trajectoire de commande est bornée inférieurement par la relation d’incertitude non commutative de Robertson–Schrödinger sur les observables d’état, Δ_Ψ A · Δ_Ψ B ≥ ½ |⟨[A, B]⟩_Ψ|, interdisant résonance chaotique et divergence oscillatoire. Le processeur hôte maintient une charge moyenne de 0,20 pendant que le coprocesseur tourne à régime ≥90 % (Observation 2).
 * **Clôture exacte du registre.** L’opérateur bidirectionnel de transport 𝒯 : 𝒱 ⇄ ℛ alterne de direction sous symétrie ℤ₂ sur des granules étalonnés. La clôture R_• = N_• + F_• établit l’identité résiduelle Δ ≔ N↓ − N↑ = F↑ − F↓ (Proposition 3). La téléométrie de noyau confirme la conservation exacte de masse : sur 1 260 requêtes, 1 256 abouties, 4 rejetées (admissions à la frontière de 𝒱), donnant Δ = 4 granules avec un déséquilibre net de 0,32 % (Observation 3).
 * **Saturation sans divergence.** Les quantiles conditionnels de période de trame q_p(s) en unités de période de présentation T₀ restent bornés à 1,01–1,04 T₀ sur toutes les strates jusqu’à s ≥ 0,98, où p99 vaut 3,55 T₀ (Observations 4, 5). Une charge continue de 65 minutes de preuve formelle (tas résidant >6,5 Gio, charge 9,25) maintient la latence médiane d’ordonnancement p50 ∈ [1, 12] µs, annule l’évacuation de swap (p_swpout = 0 pendant >30 min), effondre les blocages PSI mémoire de −99,998 %, et enregistre zéro terminaison de processus (Observation 6).
@@ -76,7 +76,7 @@
 
 <div align="center"><picture><source media="(prefers-color-scheme: dark)" srcset="assets/oscuro/plaque_systems_stage1.png"><img src="assets/claro/plaque_systems_stage1.png" alt="Étape 1 : condition aux limites des allocateurs déterministes, conservation de flux et observation de frontière du domaine rapide" width="860"></picture></div>
 
-*Base formelle :* `docs/formal/#s1`, Équation (1.2), Observation 1. L’algèbre ne nomme aucune taille ; elle est identique pour un espace mémoire local ou une grappe complète.
+*Module formel (base) :* `docs/formal/#s1`, Équation (1.2), Observation 1. L’algèbre ne nomme aucune taille ; elle est identique pour un espace mémoire local ou une grappe complète.
 
 ---
 
@@ -86,8 +86,8 @@
 
 <div align="center"><picture><source media="(prefers-color-scheme: dark)" srcset="assets/oscuro/plaque_systems_stage2.png"><img src="assets/claro/plaque_systems_stage2.png" alt="Étape 2 : somme directe à préséance égale, borne de queue du temps de séjour, corollaire d’une voie supplémentaire et réalisation k=7" width="860"></picture></div>
 
-*Base formelle :* `docs/formal/#s2`, Équation (2.1), Proposition 1, Proposition 2, Corollaires 1–2.  
-*Déploiement :* k = 7 collecteurs concurrents compressés sous symétrie cyclique ℤ₇ à priorité 100, ratio de compression 2,88:1.
+*Module formel (base) :* `docs/formal/#s2`, Équation (2.1), Proposition 1, Proposition 2, Corollaires 1–2.  
+*Déploiement :* k = 7 collecteurs concurrents compressés sous symétrie cyclique ℤ₇ à priorité 100, facteur de compression 2,88:1.
 
 ---
 
@@ -97,7 +97,7 @@
 
 <div align="center"><picture><source media="(prefers-color-scheme: dark)" srcset="assets/oscuro/plaque_systems_stage3.png"><img src="assets/claro/plaque_systems_stage3.png" alt="Étape 3 : nuplet d’état et équations maîtresses, borne d’incertitude de Robertson-Schrödinger et observation de désaccouplement asymétrique" width="860"></picture></div>
 
-*Base formelle :* `docs/formal/#s3`, Équations (3.1)–(3.3), Observation 2.  
+*Module formel (base) :* `docs/formal/#s3`, Équations (3.1)–(3.3), Observation 2.  
 *Fondations mathématiques en Lean 4 :* Physlib #1723, #1725.
 
 ---
@@ -108,7 +108,7 @@
 
 <div align="center"><picture><source media="(prefers-color-scheme: dark)" srcset="assets/oscuro/plaque_systems_stage4.png"><img src="assets/claro/plaque_systems_stage4.png" alt="Étape 4 : opérateur de transport bidirectionnel, identité du résidu et observation de clôture exacte sur 1260 requêtes" width="860"></picture></div>
 
-*Base formelle :* `docs/formal/#s4`, Équations (4.1)–(4.2), Définition 1, Proposition 3, Observation 3. Compteurs réels : 1 260 requêtes, 1 256 menées à terme, 4 rejets (frontière de 𝒱), Δ = 4 granules, 0,32 % de déséquilibre net.
+*Module formel (base) :* `docs/formal/#s4`, Équations (4.1)–(4.2), Définition 1, Proposition 3, Observation 3. Compteurs réels : 1 260 requêtes, 1 256 menées à terme, 4 rejets (frontière de 𝒱), Δ = 4 granules, 0,32 % de déséquilibre net.
 
 ---
 
@@ -118,7 +118,7 @@
 
 <div align="center"><picture><source media="(prefers-color-scheme: dark)" srcset="assets/oscuro/plaque_systems_stage5.png"><img src="assets/claro/plaque_systems_stage5.png" alt="Étape 5 : quantiles conditionnels de période de trame par strate et observation de saturation symbolique asymptotique soutenue" width="860"></picture></div>
 
-*Base formelle :* `docs/formal/#s5`, Équations (5.1)–(5.2), Observations 4, 5, 6 ; Preuves E3, E5.
+*Module formel (base) :* `docs/formal/#s5`, Équations (5.1)–(5.2), Observations 4, 5, 6 ; Preuves E3, E5.
 
 ---
 
@@ -128,7 +128,7 @@
 
 <div align="center"><picture><source media="(prefers-color-scheme: dark)" srcset="assets/oscuro/plaque_systems_stage6.png"><img src="assets/claro/plaque_systems_stage6.png" alt="Étape 6 : réduction Pi de Buckingham, corollaire d’équivariance sous dilatation et réalisation continue en virgule fixe Q12" width="860"></picture></div>
 
-*Base formelle :* `docs/formal/#s6`, Équation (6.1), Proposition 4, Corollaire 3. Déploiement : variété d’actionnement VM à virgule fixe ℚ₁₂ sans constante entière.
+*Module formel (base) :* `docs/formal/#s6`, Équation (6.1), Proposition 4, Corollaire 3. Déploiement : variété d’actionnement VM à virgule fixe ℚ₁₂ sans constante entière.
 
 ---
 
@@ -177,19 +177,62 @@ Le flux entropique volatil est réparti entre 7 collecteurs concurrents sous sym
 
 ---
 
-## 🏛️ Mosaïque des dépôts
+## 🔬 Contributions Physlib fusionnées liées
 
-| Dépôt | Portée & axe théorique |
-|:---|:---|
-| [**Physlib : PRs fusionnées**](https://github.com/leanprover-community/physlib/pulls?q=is%3Apr+is%3Amerged+author%3Anaype888-cloud) | Fondations mathématiques amont en Lean 4 : incertitude et bornes spectrales |
-| [`nava-robertson-schrodinger`](https://github.com/naype888-cloud/nava-robertson-schrodinger) | Incertitude dimensionnelle élémentaire : variétés discrètes cubiques NRS et NRS³ |
-| [`nrs3-tightbinding`](https://github.com/naype888-cloud/nrs3-tightbinding) | Chaîne de liaisons fortes, conditions aux bords ouverts et cube périodique des 118 éléments |
-| [`nrs3-cube`](https://github.com/naype888-cloud/nrs3-cube) | Le cube ouvert de trois graphes chemins et commutateurs d’axes |
-| [`BACQM-NRS3`](https://github.com/naype888-cloud/BACQM-NRS3) | Chaîne formelle canonique et portail mathématique interactif |
+| PR Physlib | Énoncé formel principal | Lien avec ce dépôt |
+|:---:|:---|:---|
+| [**#1723**](https://github.com/leanprover-community/physlib/pull/1723) | Incertitude élémentaire sur la chaîne ouverte | Borne non commutative de la variété dynamique, Étape 3 |
+| [**#1725**](https://github.com/leanprover-community/physlib/pull/1725) | Le cube ouvert NRS³ | Cadre géométrique amont du transport, Étape 3 |
 
 ---
 
-## 🛠️ Vérification, reproductibilité et données
+## 📚 Catalogue des modules Lean
+
+| Module Physlib | Théorème / Objet | Signification | `sorry` |
+|:---|:---|:---|:---:|
+| `PhyslibAlpha/CondensedMatter/TightBindingChain/ElementalUncertainty` (#1723) | `variance_mul_variance_maxCurrentState` | Borne inférieure non commutative de Robertson–Schrödinger | 0 |
+| `PhyslibAlpha/CondensedMatter/TightBindingChain/Cube/Basic` (#1725) | `robertson_det_cube` | Déterminant de Robertson multi-observables | 0 |
+
+### Portée
+
+* Les fondations algébriques sont certifiées en Lean 4 dans Physlib ; l’implémentation noyau C/Asm (`nava_brain`, `nava_zzram`) est strictement propriétaire et n’est pas distribuée publiquement.
+
+---
+
+## 🏛️ La mosaïque
+
+| Dépôt | Objet |
+|:---|:---|
+| [**00 · bacqm-substrate**](https://github.com/naype888-cloud/bacqm-systems) | Substrat matériel & moteur du noyau Linux : modules de mémoire dynamiques en temps réel *(ce dépôt)* |
+| [`01 · nava-robertson-schrodinger`](https://github.com/naype888-cloud/nava-robertson-schrodinger) | Le canon : l'incertitude élémentaire dimensionnelle sur le cube ouvert, ℂᵈ ⊗ ℂᵈ ⊗ ℂᵈ |
+| [`02 · Proper-Time-General-Relativity`](https://github.com/naype888-cloud/Proper-Time-General-Relativity) | Le temps compte les pas : τ = 1/(φ|t|) à quatre sites ; masse effective, équivalence, gravitation |
+| [`03 · nrs3-mandelstam-tamm-cramer-rao`](https://github.com/naype888-cloud/nrs3-mandelstam-tamm-cramer-rao) | Mandelstam–Tamm et Cramér–Rao : aucun état n'est orthogonal à lui-même avant πħ/(2ΔE) |
+| [`04 · YM-By-Perelmans-surgery-method`](https://github.com/naype888-cloud/YM-By-Perelmans-surgery-method) | Yang–Mills sur réseau : loi d'aire uniforme, matrice de transfert, défaut de fibre (0 sorry) |
+| [`05 · nrs3-tightbinding`](https://github.com/naype888-cloud/nrs3-tightbinding) | La chaîne de Physlib, le cube ouvert et la table périodique (H–Og), un cube 3D par élément |
+| [`06 · nrs3-cristales`](https://github.com/naype888-cloud/nrs3-cristales) | Cristaux : la symétrie donne la forme de Σ et Ω, le spectre donne la taille |
+| [`07 · nrs3-completude`](https://github.com/naype888-cloud/nrs3-completude) | Complétude constructive et limites spectrales par Robertson–Fiedler–Niven–Szegő |
+| [`08 · nrs3-golab`](https://github.com/naype888-cloud/nrs3-golab) | Gołąb, les deux extrêmes : π = 3 (hexagone), 4 (carré) ; produit scalaire → π exact ; stabilité en d = 3 |
+| [`09 · nrs3-de-sitter`](https://github.com/naype888-cloud/nrs3-de-sitter) | Cosmologie de Sitter : rayon d'horizon L_dS, constante cosmologique positive et courbure |
+| [`10 · nrs3-bekenstein`](https://github.com/naype888-cloud/nrs3-bekenstein) | Thermodynamique des trous noirs : frontière à bits, entropie de Bekenstein–Hawking saturée |
+| [`11 · nrs3-landauer-carnot`](https://github.com/naype888-cloud/nrs3-landauer-carnot) | Limite de Landauer et cycle de Carnot : coût d'effacement d'un bit et dissipation minimale |
+| [`12 · nrs3-penrose`](https://github.com/naype888-cloud/nrs3-penrose) | Effondrement gravitationnel de Diósi–Penrose : temps de décohérence par auto-énergie |
+| [`13 · nrs3-rovelli-lqg`](https://github.com/naype888-cloud/nrs3-rovelli-lqg) | Gravité quantique à boucles : spectre d'aire discrète, opérateur de surface et saturation de spin |
+| [`14 · nrs3-uncertainty-cone`](https://github.com/naype888-cloud/nrs3-uncertainty-cone) | Cône de lumière futur et cercle de Minkowski : structure causale sous revêtement SL(2, ℂ) |
+| [`15 · lean4-commits`](https://github.com/naype888-cloud/lean4-commits) | 53 PRs fusionnées dans leanprover-community/physlib : catalogue de preuves formelles, 0 sorry, ZFC |
+---
+
+## ⏱️ Chronologie
+
+| Année | Résultat | Étape |
+|:---:|:---|:---:|
+| **1914** | Buckingham : théorème Π d’analyse dimensionnelle | 6 |
+| **1917** | Erlang : files multivoies à arrivées poissoniennes | 2 |
+| **1929–30** | Robertson et Schrödinger : borne non commutative | 3 |
+| **2026** | Physlib #1723, #1725 : formalisation Lean 4 de la borne | 3 |
+
+---
+
+## 🛠️ Compilation, vérification et données
 
 Le socle mathématique — la relation d’incertitude non commutative sur la paire transport : position — est vérifié par machine en Lean 4 sous les seuls axiomes standards ZFC `[propext, Classical.choice, Quot.sound]` (Physlib #1723, #1725).
 
@@ -230,6 +273,12 @@ Toutes les séries vivent dans [`data/`](data/) réduites en ratios sans dimensi
 >    * **Cas d'usage et charge de travail visée.**
 > 
 > *(Nous examinons la viabilité technique et l'adéquation du matériel ; si les spécifications satisfont aux exigences du substrat, nous prenons contact pour fixer les conditions de l'évaluation).*
+
+---
+
+## 📜 Licence
+
+Moteur d’exécution et code noyau strictement propriétaires ; spécifications formelles et séries CSV réduites publiées pour audit académique, voir [`LICENSE`](LICENSE).
 
 ---
 

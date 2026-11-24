@@ -1,0 +1,20 @@
+BACQM Systems — Proprietary Runtime & Open Formal Specifications
+
+Copyright (c) 2026 Eduardo Nava Hernandez (https://github.com/naype888-cloud).
+All rights reserved.
+
+1. Proprietary Execution Engine (Closed Source)
+The bare-metal substrate, Linux kernel modules (including `nava_brain` and
+`nava_zzram`), and all executable C/Rust/Assembly implementations are strictly
+proprietary industrial intellectual property of Eduardo Nava Hernandez / BACQM
+Systems. No source code, binary module, or redistribution right is granted.
+Hardware evaluation and benchmarks require a prior written NDA.
+
+2. Open Formal Specifications & Benchmark Series
+The mathematical specifications, documentation (`docs/`), and dimensionless
+benchmark CSV datasets (`data/`, `campaign/`) published in this repository may
+be inspected and cited for noncommercial academic research with attribution.
+
+3. Upstream Lean 4 / Physlib Foundations
+The referenced formal theorems in `leanprover-community/physlib` remain under
+the Apache License 2.0 of Physlib.
