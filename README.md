@@ -2,7 +2,9 @@
 
 <div align="center">
 
-# BACQM Systems · Dynamique de mémoire invariante d’échelle
+<picture><source media="(prefers-color-scheme: dark)" srcset="assets/oscuro/titre_bacqm_systems.png"><img src="assets/claro/titre_bacqm_systems.png" alt="Systèmes BACQM · Dynamique de mémoire invariante d’échelle & isomorphisme de Curry–Howard" width="860"></picture>
+**"Systèmes BACQM · Dynamique de mémoire invariante d’échelle & isomorphisme de Curry–Howard"**
+
 ### Collecteurs de même préséance, loi de commande sans constantes prescrites, latence de queue bornée par la mesure
 
 **Eduardo Nava Hernández**  
