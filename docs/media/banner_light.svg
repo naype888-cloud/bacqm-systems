@@ -1,7 +1,7 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 400" width="1280" height="400">
 <text x="72" y="96" font-family="ui-monospace,Menlo,Consolas,monospace" font-size="15" letter-spacing="3.3" fill="#0969da">SYSTEMS ALGEBRA · MEASURED</text>
 <text x="70" y="200" font-family="'Instrument Serif',Georgia,'Times New Roman',serif" font-size="104" fill="#1f2328">BACQM Systems</text>
-<text x="72" y="256" font-family="'Instrument Serif',Georgia,'Times New Roman',serif" font-style="italic" font-size="38" fill="#57606a">Memory as a flow, not a volume</text>
+<text x="72" y="256" font-family="'Instrument Serif',Georgia,'Times New Roman',serif" font-style="italic" font-size="38" fill="#57606a">La mémoire comme un flux, non un volume</text>
 <rect x="72" y="292" width="560" height="1" fill="#d0d7de"/><rect x="72" y="291" width="64" height="3" fill="#0969da"/>
 <text x="72" y="334" font-family="ui-monospace,Menlo,Consolas,monospace" font-size="15" letter-spacing="1.5" fill="#57606a">ℛ = ⊕ ℛᵢ · π(ℛᵢ) = π(ℛⱼ) · p99·μ = ln 100 / (1 − ρ/k)</text>
 <ellipse cx="1000" cy="200" rx="170" ry="105.4" fill="none" stroke="#0969da" stroke-opacity=".25" stroke-width="1.6" stroke-dasharray="0 7" stroke-linecap="round"><animate attributeName="stroke-dashoffset" values="0;-70" dur="6s" repeatCount="indefinite"/></ellipse>

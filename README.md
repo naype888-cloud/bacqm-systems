@@ -16,12 +16,7 @@
 
 <br>
 
-<a href="https://naype888-cloud.github.io/bacqm-systems/">
-  <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="docs/media/banner_dark.svg">
-    <img src="docs/media/banner_light.svg" alt="BACQM Systems — la mémoire comme flux et non comme volume. Ouvrir la variété en ligne" width="860">
-  </picture>
-</a>
+<a href="https://naype888-cloud.github.io/bacqm-systems/"><picture><source media="(prefers-color-scheme: dark)" srcset="docs/media/banner_dark.svg"><img src="docs/media/banner_light.svg" alt="BACQM Systems — la mémoire comme flux et non comme volume. Ouvrir la variété en ligne" width="860"></picture></a>
 
 <p>
   <a href="https://naype888-cloud.github.io/bacqm-systems/"><b>▶ Ouvrir la variété en ligne</b></a> ·
@@ -205,7 +200,7 @@ Le flux entropique volatil est réparti entre 7 collecteurs concurrents sous sym
 |:---|:---|
 | [**00 · bacqm-substrate**](https://github.com/naype888-cloud/bacqm-systems) | Substrat matériel & moteur du noyau Linux : modules de mémoire dynamiques en temps réel *(ce dépôt)* |
 | [`01 · nava-robertson-schrodinger`](https://github.com/naype888-cloud/nava-robertson-schrodinger) | Le canon : l'incertitude élémentaire dimensionnelle sur le cube ouvert, ℂᵈ ⊗ ℂᵈ ⊗ ℂᵈ |
-| [`02 · Proper-Time-General-Relativity`](https://github.com/naype888-cloud/Proper-Time-General-Relativity) | Le temps compte les pas : τ = 1/(φ|t|) à quatre sites ; masse effective, équivalence, gravitation |
+| [`02 · Proper-Time-General-Relativity`](https://github.com/naype888-cloud/Proper-Time-General-Relativity) | Le temps compte les pas : τ = 1/(φ\|t\|) à quatre sites ; masse effective, équivalence, gravitation |
 | [`03 · nrs3-mandelstam-tamm-cramer-rao`](https://github.com/naype888-cloud/nrs3-mandelstam-tamm-cramer-rao) | Mandelstam–Tamm et Cramér–Rao : aucun état n'est orthogonal à lui-même avant πħ/(2ΔE) |
 | [`04 · YM-By-Perelmans-surgery-method`](https://github.com/naype888-cloud/YM-By-Perelmans-surgery-method) | Yang–Mills sur réseau : loi d'aire uniforme, matrice de transfert, défaut de fibre (0 sorry) |
 | [`05 · nrs3-tightbinding`](https://github.com/naype888-cloud/nrs3-tightbinding) | La chaîne de Physlib, le cube ouvert et la table périodique (H–Og), un cube 3D par élément |
@@ -234,7 +229,7 @@ Le flux entropique volatil est réparti entre 7 collecteurs concurrents sous sym
 
 ## 🛠️ Compilation, vérification et données
 
-Le socle mathématique — la relation d’incertitude non commutative sur la paire transport : position — est vérifié par machine en Lean 4 sous les seuls axiomes standards ZFC `[propext, Classical.choice, Quot.sound]` (Physlib #1723, #1725).
+Le socle mathématique — la relation d’incertitude non commutative sur la paire transport : position — est vérifié par machine en Lean 4 sous les seuls axiomes standards ZFC `[propext, Classical.choice, Quot.sound]` (<code>Physlib #1723, #1725</code>).
 
 Le code source et les modules exécutables sont strictement propriétaires et sous secret d’architecture (aucun code C/Rust ni module binaire n’est distribué publiquement) ; seuls le socle mathématique formel (Lean 4), les métriques expérimentales et les séries de banc d’essai sont ouverts pour vérification sous l’isomorphisme de Curry-Howard :
 
